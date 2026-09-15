@@ -20,8 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # canonical / og:image / sitemap 的绝对地址来源。
-      # 换成自定义域名时，只需要改这一行。
-      SITE_URL: https://lr0625.github.io
+      # 站点部署在两个域名上（Netlify 为主，GitHub Pages 为镜像），
+      # 两边的 canonical 都指向主域名 —— 镜像指向主站是正确做法。
+      # 以后换自定义域名，只改这一行。
+      SITE_URL: https://lrspace.netlify.app
     steps:
       - uses: actions/checkout@v4
 
