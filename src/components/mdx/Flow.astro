@@ -1,0 +1,103 @@
+---
+/**
+ * 流程图容器。用于把「事件 A → 事件 B → 事件 C」这类因果链
+ * 变成可扫读的结构，而不是塞进一段长文字里。
+ *
+ * 用法（MDX）：
+ *   <Flow>
+ *     <FlowStep n="01" title="传统实际时薪统计" note="月工资 ÷ 累计工时" />
+ *     <FlowStep n="02" title="发现负向激励" tone="alert" />
+ *   </Flow>
+ */
+interface Props {
+  /** 紧凑模式：间距更小，适合 3 步以内的短链 */
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={['flow', compact && 'flow--compact']}>
+  <ol>
+    <slot />
+  </ol>
+</div>
+
+<style is:global>
+  .flow ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .flow-step {
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .flow-step:last-child {
+    padding-bottom: 0;
+  }
+
+  /* 连接线：从节点底部连到下一个节点 */
+  .flow-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 0.72rem;
+    top: 1.7rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .flow-step__node {
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    font-size: 0.62rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-tertiary);
+  }
+
+  .flow-step--alert .flow-step__node {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .flow-step--key .flow-step__node {
+    background: var(--accent-solid);
+    border-color: var(--accent-solid);
+    color: var(--accent-on);
+  }
+
+  .flow-step__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .flow-step--alert .flow-step__title {
+    color: var(--accent-ink);
+  }
+
+  .flow-step__note {
+    margin-top: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .flow--compact .flow-step {
+    padding-bottom: 1rem;
+  }
+</style>

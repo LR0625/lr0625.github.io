@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import SelectedWork from '../components/sections/SelectedWork.astro';
+import ThinkingTeaser from '../components/sections/ThinkingTeaser.astro';
+import AboutTeaser from '../components/sections/AboutTeaser.astro';
+import ContactCTA from '../components/sections/ContactCTA.astro';
+import { site } from '../data/site';
+
+/**
+ * 首页顺序即优先级，不做调整：
+ *   Hero（10 秒定位 + 30 秒能力）
+ *   → Selected Work（1 分钟看到真实作品）
+ *   → Product Thinking（判断力）
+ *   → About
+ *   → Contact
+ */
+---
+
+<BaseLayout path="/" description={site.promise}>
+  <Hero />
+  <SelectedWork />
+  <ThinkingTeaser />
+  <AboutTeaser />
+  <ContactCTA />
+</BaseLayout>

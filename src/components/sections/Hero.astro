@@ -1,0 +1,77 @@
+---
+import { hero, process } from '../../data/home';
+import { site } from '../../data/site';
+
+/**
+ * 首屏。
+ *
+ * 两层结构，对应两个时间尺度：
+ *   10 秒 —— 我是做什么的：姓名 → 身份 → 定位轴 → 价值主张
+ *   30 秒 —— 我怎么做：Think → Build → Test → Iterate
+ *
+ * 刻意不做的事：
+ *   · 不放数据仪表盘 / Metrics Bar（真实产出量纲不同，硬凑会变成模板）
+ *   · 不放装饰性图形、渐变、粒子
+ *   · 不放「欢迎来到我的网站」这类零信息量的开场
+ */
+---
+
+<section class="pt-14 pb-16 sm:pt-24 sm:pb-20">
+  <div data-reveal>
+    <p class="t-name text-ink">{hero.name}</p>
+
+    <h1 class="t-display mt-3 text-ink sm:mt-4">{hero.role}</h1>
+
+    <!--
+      定位轴：全站最先要被抓住的一行。
+      单独成行、拉开字距、用强调色 —— 让它像一个图形元素而不是一句描述。
+    -->
+    <p class="t-axes mt-5 text-accent-ink">{hero.axes}</p>
+
+    <p class="t-lead mt-8 max-w-[38ch] text-ink-2">{hero.promise}</p>
+  </div>
+
+  <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+    <a
+      href={hero.primaryCta.href}
+      class="inline-flex items-center rounded-md bg-accent-solid px-5 py-2.5 text-sm font-medium text-accent-on transition-opacity duration-150 hover:opacity-90"
+    >
+      {hero.primaryCta.label}
+    </a>
+    <a
+      href={hero.secondaryCta.href}
+      class="inline-flex items-center rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-line-strong"
+    >
+      {hero.secondaryCta.label}
+    </a>
+    <a
+      href={site.resume}
+      download
+      class="t-small ml-1 text-ink-3 transition-colors duration-150 hover:text-accent-ink"
+    >
+      简历 PDF <span aria-hidden="true">↓</span>
+    </a>
+  </div>
+
+  <!-- 30 秒层：工作方式。Vibe Coding 的主叙事落在这里，而不是「我会用某模型」。 -->
+  <div class="mt-20 border-t border-line pt-10" data-reveal>
+    <p class="eyebrow mb-8">{process.title}</p>
+
+    <ol class="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        process.steps.map((step, i) => (
+          <li class="relative">
+            <div class="flex items-baseline gap-2.5">
+              <span class="t-micro tabular-nums text-accent-ink">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="t-h3 text-ink">{step.key}</span>
+            </div>
+            <p class="t-micro mt-1 text-ink-3">{step.label}</p>
+            <p class="t-small mt-3 text-ink-2">{step.detail}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../../lib/content';
+import { projectHref } from '../../lib/content';
+import { maturityLabel } from '../../lib/maturity';
+import Tag from '../primitives/Tag.astro';
+
+/**
+ * 首页精选卡片（大卡）。
+ *
+ * 信息顺序严格按内容优先级排：
+ *   成熟度 / 真实用户 → 项目名 → 一句话价值 → 真实问题 → 指标 → 入口
+ * 技术栈不在这张卡上出现。
+ *
+ * Live Demo First：只要项目有可访问的 Demo，
+ * 「打开产品」就是第一顺位动作，排在「查看产品思考」前面。
+ */
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+const href = projectHref(project.id);
+const isConcept = data.maturity === 'concept';
+
+const demo = isConcept ? undefined : data.links.demo;
+const users = isConcept ? null : data.users;
+const metrics = isConcept ? [] : data.metrics.slice(0, 3);
+const gallery = isConcept ? data.diagrams : data.gallery;
+
+const cover = gallery.find((g) => g.isCover) ?? gallery[0];
+// 手机截图是 1:2.16 的竖图，裁到 3:4 并保留顶部区域
+const coverIsTall = cover ? cover.src.height / cover.src.width > 1.7 : false;
+
+const userLabel = users
+  ? users.count
+    ? `${users.count} 位真实用户`
+    : users.who
+  : null;
+---
+
+<article
+  class="group relative rounded-xl border border-line bg-surface transition-colors duration-200 hover:border-line-strong"
+  data-reveal
+>
+  <div class="flex flex-col gap-7 p-6 sm:p-8 lg:flex-row lg:items-start lg:gap-10">
+    <!-- 文本列 -->
+    <div class="min-w-0 flex-1">
+      <div class="mb-4 flex flex-wrap items-center gap-2">
+        <Tag tone={data.maturity === 'iterating' ? 'accent' : 'neutral'}>
+          {maturityLabel[data.maturity]}
+        </Tag>
+        {userLabel && <Tag>{userLabel}</Tag>}
+      </div>
+
+      <h3 class="t-h2 text-ink">
+        <a href={href} class="transition-colors duration-150 group-hover:text-accent-ink">
+          {data.title}
+        </a>
+      </h3>
+
+      <p class="t-small mt-3 max-w-[52ch] text-ink-2">{data.subtitle}</p>
+
+      <!-- 真实问题：卡片上直接给，招聘者不用点进去才知道做了什么 -->
+      <div class="mt-6 border-l-2 border-accent/60 pl-4">
+        <p class="eyebrow mb-2">问题</p>
+        <p class="t-small max-w-[56ch] text-ink-2">{data.problem}</p>
+      </div>
+
+      {
+        metrics.length > 0 && (
+          <dl class="mt-7 flex flex-wrap items-end gap-x-8 gap-y-4">
+            {metrics.map((m) => (
+              <div>
+                <dd class="t-stat text-ink">{m.value}</dd>
+                <dt class="t-micro mt-1 text-ink-3">{m.label}</dt>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      <!-- 动作：Demo 优先 -->
+      <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+        {demo && (
+          <a
+            href={demo}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1.5 rounded-md bg-accent-solid px-4 py-2 t-micro font-medium text-accent-on transition-opacity duration-150 hover:opacity-90"
+          >
+            打开产品
+            <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        <a
+          href={href}
+          class:list={[
+            't-small inline-flex items-center gap-1.5 font-medium transition-colors duration-150',
+            demo ? 'text-ink-2 hover:text-accent-ink' : 'text-accent-ink',
+          ]}
+        >
+          查看产品思考
+          <span
+            aria-hidden="true"
+            class="transition-transform duration-150 group-hover:translate-x-0.5">→</span
+          >
+        </a>
+      </div>
+    </div>
+
+    <!-- 封面：真实截图。没有素材的项目这一列不出现，不留空框。 -->
+    {
+      cover && (
+        <div class="w-full shrink-0 lg:w-[240px]">
+          <div
+            class:list={[
+              'overflow-hidden rounded-lg border border-line bg-bg-subtle',
+              coverIsTall ? 'aspect-[3/4]' : 'aspect-[4/3]',
+            ]}
+          >
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              widths={[240, 480]}
+              sizes="(min-width: 1024px) 240px, 100vw"
+              loading="lazy"
+              class:list={[
+                'size-full',
+                coverIsTall ? 'object-cover object-top' : 'object-cover',
+              ]}
+            />
+          </div>
+        </div>
+      )
+    }
+  </div>
+</article>

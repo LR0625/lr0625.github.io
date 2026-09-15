@@ -1,0 +1,56 @@
+---
+/**
+ * 强调块。用于一句话结论、用户原话、或需要被记住的判断。
+ * 整篇案例里最多用 2–3 次，多了就不强调了。
+ */
+interface Props {
+  /** 来源标注，如「用户原话」「结论」 */
+  label?: string;
+  tone?: 'default' | 'quote';
+}
+
+const { label, tone = 'default' } = Astro.props;
+---
+
+<aside class:list={['callout', tone === 'quote' && 'callout--quote']}>
+  {label && <p class="callout__label">{label}</p>}
+  <div class="callout__body">
+    <slot />
+  </div>
+</aside>
+
+<style is:global>
+  .callout {
+    margin-block: 2em;
+    padding-left: 1.15rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  .callout__label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 0.5rem;
+  }
+
+  .callout__body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .callout__body > * + * {
+    margin-top: 0.7em;
+  }
+
+  .callout__body p {
+    margin: 0;
+  }
+
+  .callout--quote .callout__body {
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+  }
+</style>

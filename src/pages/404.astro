@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeaturedProjects } from '../lib/content';
+import { projectHref } from '../lib/content';
+
+const projects = await getFeaturedProjects();
+---
+
+<BaseLayout path="/404" title="页面不存在" noindex>
+  <div class="flex min-h-[58vh] flex-col justify-center py-20">
+    <p class="eyebrow mb-4" data-reveal>404</p>
+    <h1 class="max-w-[24ch] t-h1 text-ink" data-reveal>
+      这个页面不存在，或者已经被移走了。
+    </h1>
+    <p class="mt-4 max-w-[52ch] t-small text-ink-2" data-reveal>
+      与其给一个死胡同，不如直接给几个真正有内容的入口。
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+      <a
+        href="/"
+        class="inline-flex items-center rounded-md bg-accent-solid px-5 py-2.5 text-sm font-medium text-accent-on transition-opacity duration-150 hover:opacity-90"
+      >
+        回到首页
+      </a>
+      <a
+        href="/projects"
+        class="inline-flex items-center rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-line-strong"
+      >
+        全部项目
+      </a>
+    </div>
+
+    {
+      projects.length > 0 && (
+        <div class="mt-14 border-t border-line pt-6" data-reveal>
+          <p class="eyebrow mb-4">或者看看</p>
+          <ul class="space-y-3">
+            {projects.map((project) => (
+              <li>
+                <a
+                  href={projectHref(project.id)}
+                  class="group inline-flex flex-wrap items-baseline gap-x-3 t-small text-ink transition-colors duration-150 hover:text-accent-ink"
+                >
+                  <span class="font-medium">{project.data.title}</span>
+                  <span class="t-micro text-ink-3">{project.data.subtitle}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

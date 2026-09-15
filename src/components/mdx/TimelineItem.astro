@@ -1,0 +1,19 @@
+---
+interface Props {
+  when: string;
+  title: string;
+  note?: string;
+  /** key = 关键节点，用强调色标记 */
+  tone?: 'default' | 'key';
+}
+
+const { when, title, note, tone = 'default' } = Astro.props;
+---
+
+<li class:list={['tl-item', tone === 'key' && 'tl-item--key']}>
+  <span class="tl-item__when">{when}</span>
+  <div>
+    <p class="tl-item__title">{title}</p>
+    {note && <p class="tl-item__note">{note}</p>}
+  </div>
+</li>

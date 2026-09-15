@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { positioning, capabilities, timeline, skills, education, links } from '../data/about';
+import { site } from '../data/site';
+import { projectHref } from '../lib/content';
+
+/**
+ * About 页。
+ * 三块内容，顺序按「招聘者想知道什么」排：
+ *   我是谁（定位）→ 我能做什么（能力 + 证据）→ 我做过什么（时间线）
+ * 刻意不做：技能百分比条、大段自传、无法证伪的自我评价。
+ */
+---
+
+<BaseLayout
+  path="/about/"
+  title="About"
+  description="机器人工程本科在读，深圳技术大学。既理解物理世界的约束，也能用 AI 把想法快速变成可运行的产品。"
+>
+  <div class="pt-16 pb-4 sm:pt-20">
+    <p class="eyebrow mb-3" data-reveal>About</p>
+    <h1 class="t-h1 text-ink" data-reveal>
+      {site.name}
+    </h1>
+    <p class="mt-3 t-axes text-accent-ink" data-reveal>{site.axes}</p>
+
+    <div class="mt-8 max-w-[64ch] space-y-4" data-reveal>
+      {positioning.map((line) => (
+        <p class="t-body text-ink-2">{line}</p>
+      ))}
+    </div>
+  </div>
+
+  <!-- 我能做什么：每条都挂着可核对的项目证据 -->
+  <section class="pt-16 sm:pt-20" aria-labelledby="capabilities">
+    <header class="mb-8 border-b border-line pb-5" data-reveal>
+      <h2 id="capabilities" class="t-h3 text-ink">
+        我能做什么
+      </h2>
+      <p class="mt-1.5 t-micro text-ink-3">
+        每一条都能在作品集里找到对应的事，没有对应项目的条目不写在这里。
+      </p>
+    </header>
+
+    <ul class="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+      {
+        capabilities.map((cap) => (
+          <li class="bg-surface px-5 py-5" data-reveal>
+            <p class="t-small font-medium text-ink">{cap.text}</p>
+            <p class="mt-2.5 t-micro text-ink-3">{cap.evidence}</p>
+            <a
+              href={projectHref(cap.project)}
+              class="mt-3 inline-flex items-center gap-1 t-micro text-accent-ink transition-opacity duration-150 hover:opacity-75"
+            >
+              对应项目 <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 时间线 -->
+  <section class="pt-16 sm:pt-20" aria-labelledby="timeline">
+    <header class="mb-8 border-b border-line pb-5" data-reveal>
+      <h2 id="timeline" class="t-h3 text-ink">时间线</h2>
+    </header>
+
+    <ol class="relative">
+      {
+        timeline.map((item) => (
+          <li class="grid gap-2 border-b border-line py-5 last:border-b-0 sm:grid-cols-[9rem_1fr] sm:gap-6" data-reveal>
+            <span class="t-micro tabular-nums text-ink-3">{item.when}</span>
+            <div>
+              <p class="t-small font-medium text-ink">{item.title}</p>
+              <p class="mt-1 max-w-[60ch] t-micro text-ink-2">
+                {item.detail}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- 技能：按用途分组，不按熟练度 -->
+  <section class="pt-16 sm:pt-20" aria-labelledby="skills">
+    <header class="mb-8 border-b border-line pb-5" data-reveal>
+      <h2 id="skills" class="t-h3 text-ink">工具与技能</h2>
+      <p class="mt-1.5 t-micro text-ink-3">
+        按「用它们来做什么」分组。这里列出的每一项都在项目里实际用过。
+      </p>
+    </header>
+
+    <div class="grid gap-8 sm:grid-cols-3" data-reveal>
+      {
+        skills.map((group) => (
+          <div>
+            <h3 class="eyebrow mb-3">{group.group}</h3>
+            <ul class="space-y-1.5">
+              {group.items.map((item) => (
+                <li class="t-micro text-ink-2">{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 教育与联系方式 -->
+  <section class="pt-16 sm:pt-20" aria-labelledby="contact-info">
+    <header class="mb-8 border-b border-line pb-5" data-reveal>
+      <h2 id="contact-info" class="t-h3 text-ink">
+        教育背景与联系
+      </h2>
+    </header>
+
+    <div class="grid gap-10 sm:grid-cols-2">
+      <div data-reveal>
+        <p class="t-small font-medium text-ink">{education.school}</p>
+        <p class="mt-1.5 t-micro text-ink-2">{education.major}</p>
+        <p class="mt-1 t-micro tabular-nums text-ink-3">
+          {education.period} · GPA {education.gpa}
+        </p>
+      </div>
+
+      <dl class="space-y-3 t-small" data-reveal>
+        <div class="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+          <dt class="text-ink-3">邮箱</dt>
+          <dd>
+            <a
+              href={`mailto:${links.email}`}
+              class="text-ink transition-colors duration-150 hover:text-accent-ink"
+            >
+              {links.email}
+            </a>
+          </dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+          <dt class="text-ink-3">电话</dt>
+          <dd class="tabular-nums text-ink">
+            <a href={`tel:${site.contact.phone}`} class="transition-colors duration-150 hover:text-accent-ink">
+              {site.contact.phone}
+            </a>
+          </dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+          <dt class="text-ink-3">GitHub</dt>
+          <dd>
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener"
+              class="text-ink transition-colors duration-150 hover:text-accent-ink"
+            >
+              github.com/LR0625 <span aria-hidden="true">↗</span>
+            </a>
+          </dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-4">
+          <dt class="text-ink-3">简历</dt>
+          <dd>
+            <a
+              href={links.resume}
+              download
+              class="text-ink transition-colors duration-150 hover:text-accent-ink"
+            >
+              下载 PDF <span aria-hidden="true">↓</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</BaseLayout>

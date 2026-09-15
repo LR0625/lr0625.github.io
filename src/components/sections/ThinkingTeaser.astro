@@ -1,0 +1,42 @@
+---
+import { getThinking } from '../../lib/content';
+import { thinkingTeaser } from '../../data/home';
+import ThinkingCard from '../cards/ThinkingCard.astro';
+import Section from '../primitives/Section.astro';
+
+/**
+ * 首页只放 3 条。列表页放全部。
+ * 结论前置 —— 卡片主体是 summary，不是标题。
+ */
+const all = await getThinking();
+const posts = thinkingTeaser.slugs
+  .map((slug) => all.find((p) => p.id === slug))
+  .filter((p) => p !== undefined);
+---
+
+{
+  posts.length > 0 && (
+    <Section
+      id="thinking"
+      eyebrow="Product Thinking"
+      lead="每一篇都来自一个真实项目里的具体判断，不是方法论总结。"
+      divider
+    >
+      <div class="border-t border-line">
+        {posts.map((post) => (
+          <ThinkingCard post={post} />
+        ))}
+      </div>
+
+      <div class="mt-8">
+        <a
+          href="/thinking"
+          class="inline-flex items-center gap-1.5 text-sm text-ink-2 transition-colors duration-150 hover:text-accent-ink"
+        >
+          全部思考
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </Section>
+  )
+}

@@ -1,0 +1,90 @@
+---
+title: 方程式赛车电子系统 · 安全回路
+subtitle: 从规则书到真值表再到 PCB —— 高压安全回路不允许有「差不多」
+maturity: shipped
+kind: engineering
+order: 5
+featured: false
+
+problem: 电动方程式赛车的高压安全回路必须在任何异常下都能可靠切断动力。这类回路的设计依据不是灵感，而是一整套赛会规则 —— 而规则条文和可落地的电路实现之间，隔着一层需要自己补上的转换。
+
+keyDecision: 不靠「看懂了」推进，而是把每一条规则先落成可验证的中间产物 —— 真值表、原理图标注、对板卡的逐层复刻 —— 再往上做设计。安全回路里没有「应该可以」。
+
+tags:
+  - 中国大学生方程式系列赛事
+  - 高压安全回路
+  - KiCad 原理图 / PCB
+  - CATIA
+
+users: null
+
+iterations: []
+
+metrics:
+  - label: 交付物
+    value: 4 类
+    source: 实习报告 + 真值表 + 抄板工程 + 安全回路任务
+  - label: 抄板范围
+    value: 原理图 + PCB
+    source: IMD-AMS抄板.kicad_sch / .kicad_pcb（含多层走线）
+
+links: {}
+
+stack:
+  - KiCad（原理图 / PCB）
+  - CATIA
+  - 高压安全回路：TSAL / BSPD / IMD / AMS
+  - 电气系统形式表（ESF）
+
+gallery:
+  - src: ../../assets/projects/fsae-electronics/pcb-layout.png
+    alt: KiCad 中 IMD-AMS 板卡的 PCB 布线编辑界面，显示顶层走线与网络
+    caption: IMD-AMS 抄板 —— 在 KiCad 中逐层复刻现有板卡
+    isCover: true
+  - src: ../../assets/projects/fsae-electronics/pcb-layers.png
+    alt: PCB 层管理器，列出 TopCopper、BottomCopper、TopSilkscreen 等全部叠层
+    caption: 多层叠层与走线结构（TopCopper / BottomCopper / TopSilkscreen）
+
+needsReview: true
+---
+
+## 01 · 背景
+
+深圳技术大学极光车队，中国大学生方程式系列赛事（FSAE）。2026 暑期加入电子系统组。
+
+电动汽车的高压安全回路必须在任何异常下可靠切断动力。它的设计依据不是灵感，而是赛会规则书里的一整套条文 —— 而条文和可落地的电路之间，隔着一层需要自己补上的转换。
+
+## 02 · 做了什么
+
+| 交付物 | 内容 |
+| --- | --- |
+| 安全回路任务 | 对照规则书逐个熟悉安全回路各部分：原理图 + 对应规则条款 |
+| IMD-AMS 真值表 | 把绝缘监测（IMD）与电池管理（AMS）的状态组合整理成真值表，明确每种输入组合下回路应有的输出 |
+| IMD-AMS 抄板 | 在 KiCad 中逐层复刻现有板卡：原理图 `.kicad_sch` + PCB `.kicad_pcb`，含完整符号库与多层走线 |
+| TSAL 8.0 | 高压系统激活指示灯相关工程文档 |
+| CATIA 任务 | 1 / 2 / 3 三组建模任务 |
+| 实习报告 | 暑期工作完整记录 |
+
+涉及的术语都是这个回路的真实组成部分：
+
+- **TSAL** —— Tractive System Active Light，高压系统激活指示灯
+- **BSPD** —— Brake System Plausibility Device，制动系统合理性装置
+- **IMD** —— Insulation Monitoring Device，绝缘监测装置
+- **AMS** —— Accumulator Management System，电池管理系统
+- **ESF** —— Electrical System Form，电气系统形式表
+
+## 03 · 为什么这件事和 AI 产品放在一起
+
+因为它回答了一个 AI 产品岗会问的问题：**你能不能理解一个你不熟悉的复杂系统，然后把它拆成可以被验证的部分？**
+
+真值表、原理图标注、逐层抄板 —— 这些方法论的共同点是：**先把「我以为我懂了」变成「我能指着某一层说这里是对的」。**
+
+这个习惯后来直接影响了我在软件项目里的做法。做教师工时工具时遇到「打卡和课表算出来的工时对不上」，我的第一反应不是去查代码，而是先问「一天工作了多久这件事，我们定义过吗」—— 然后把口径显式写成 `打卡时段 ∪ 课表时段`，再收敛成唯一函数。
+
+**先让每个状态都有明确定义的输出，再谈怎么实现。** 真值表和工时口径是同一个方法。
+
+## 04 · 状态
+
+暑期工作已完成并交付，相关文档与工程文件留存于车队资料。
+
+<small>本页仍需确认：可公开的脱敏截图范围（当前使用 PCB 编辑界面截图）；车队是否有对外展示限制；实习报告是否可以节选。</small>

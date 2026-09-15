@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { thinkingHref } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('thinking');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+
+const dateLabel = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(data.date);
+
+const all = await getCollection('thinking');
+const ordered = all.sort((a, b) => a.data.order - b.data.order);
+const idx = ordered.findIndex((p) => p.id === post.id);
+const next = ordered[idx + 1] ?? ordered[0];
+---
+
+<BaseLayout
+  path={thinkingHref(post.id)}
+  title={data.title}
+  description={data.summary}
+  type="article"
+>
+  <article class="pt-12 pb-4 sm:pt-16">
+    <a
+      href="/thinking"
+      class="inline-flex items-center gap-1.5 t-micro text-ink-3 transition-colors duration-150 hover:text-accent-ink"
+    >
+      <span aria-hidden="true">←</span> 全部思考
+    </a>
+
+    <header class="mt-8 max-w-[68ch]" data-reveal>
+      <div class="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 t-micro text-ink-3">
+        <time datetime={data.date.toISOString()} class="tnum">{dateLabel}</time>
+        {data.tags.map((tag) => <span>{tag}</span>)}
+      </div>
+
+      <h1 class="t-h1 text-ink">
+        {data.title}
+      </h1>
+
+      <!-- 结论前置：读者可以先看结论，再决定要不要读过程 -->
+      <p class="mt-5 border-l-2 border-accent pl-4 t-body text-ink">
+        {data.summary}
+      </p>
+    </header>
+
+    <div class="prose mt-12" data-reveal>
+      <Content />
+    </div>
+
+    {
+      data.fromProject && (
+        <p class="mt-12 border-t border-line pt-6 t-micro text-ink-3">
+          这篇思考来自项目{' '}
+          <a
+            href={`/projects/${data.fromProject}/`}
+            class="text-accent-ink underline decoration-accent/40 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
+          >
+            查看完整案例
+          </a>
+        </p>
+      )
+    }
+  </article>
+
+  {
+    next && next.id !== post.id && (
+      <nav class="mt-14 border-t border-line py-8" aria-label="文章导航">
+        <a
+          href={thinkingHref(next.id)}
+          class="group flex items-baseline justify-between gap-6 transition-colors duration-150"
+        >
+          <span class="eyebrow">下一篇</span>
+          <span class="max-w-[46ch] text-right t-small font-medium text-ink transition-colors duration-150 group-hover:text-accent-ink">
+            {next.data.title}
+          </span>
+        </a>
+      </nav>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ThinkingCard from '../../components/cards/ThinkingCard.astro';
+import { getThinking } from '../../lib/content';
+
+const posts = await getThinking();
+---
+
+<BaseLayout
+  path="/thinking/"
+  title="Thinking"
+  description="来自真实项目的产品判断记录：每一篇都对应一次具体的取舍，而不是方法论总结。"
+>
+  <div class="pt-16 pb-4 sm:pt-20">
+    <p class="eyebrow mb-3" data-reveal>Product Thinking</p>
+    <h1 class="t-h1 text-ink" data-reveal>
+      我改过什么，以及为什么
+    </h1>
+    <p class="mt-4 max-w-[62ch] t-small text-ink-2" data-reveal>
+      每一篇都来自一个真实项目里的一次具体判断：观察到什么、当时的假设是什么、
+      用什么方式验证、最后得出什么结论。篇幅都不长，因为重点在判断本身。
+    </p>
+  </div>
+
+  <div class="pb-8">
+    <div class="border-t border-line">
+      {posts.map((post) => <ThinkingCard post={post} showSource={false} />)}
+    </div>
+  </div>
+</BaseLayout>

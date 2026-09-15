@@ -1,0 +1,92 @@
+---
+title: 傻子立几 · 高中立体几何智能建模
+subtitle: 拍一道立体几何题，直接看懂辅助线画在哪、为什么这么画
+maturity: shipped
+kind: product
+order: 6
+featured: true
+
+problem: 高中立体几何题难在「看不出来」—— 答案给了辅助线，但学生看不出这条线是怎么想到的。静态答案书只能用文字描述三维关系，而这恰恰是文字最不擅长的事。
+
+keyDecision: 不做「拍照搜题给答案」，而是把题目**还原成可旋转的 3D 模型**——点标注、虚线遮挡棱、辅助线、可切换建系，再用学科网风格的分步解析串起来。因为学生的断点不是「不知道答案」，而是「不知道这条线为什么画在这」。
+
+tags:
+  - 多模态大模型
+  - 线上可访问
+  - 拍照 → 3D 建模
+  - GitHub Pages
+
+users: null
+
+iterations: []
+
+metrics:
+  - label: 线上状态
+    value: 可访问
+    source: https://lr0625.github.io/sha-zi-li-ji/ 返回 HTTP 200
+
+links:
+  demo: https://lr0625.github.io/sha-zi-li-ji/
+  repo: https://github.com/LR0625/sha-zi-li-ji
+
+stack:
+  - Vite + TypeScript
+  - Capacitor（Android 打包）
+  - 智谱 glm-4v-flash（拍照识别）
+  - 智谱 glm-4-flash（分步解析生成）
+  - GitHub Pages
+
+cover: /images/projects/sha-zi-li-ji/cover.png
+coverAlt: 立体几何题的 3D 建模界面，含辅助线与坐标标注
+
+gallery:
+  - src: ../../assets/projects/sha-zi-li-ji/logo.png
+    alt: 傻子立几应用的标识图形
+    caption: 应用标识
+    isCover: true
+
+needsReview: true
+---
+
+## 01 · 问题
+
+立体几何是高中数学里最依赖空间想象的一章。学生在纸面上看到的是一个投影后的二维图形，但题目考查的是三维关系 —— 哪条棱被挡住了、哪两个面垂直、辅助线该连哪两个点。
+
+答案书只能用文字描述这些关系。「过点 P 作平面 α 的垂线，垂足为 H」这句话本身没有错，但它没有解决学生真正卡住的地方：**为什么想到要作这条垂线？**
+
+## 02 · 洞察
+
+学生的断点不是「不知道答案」，而是**缺少可操作的三维直觉**。
+
+而三维直觉这件事，静态图文是最差的载体 —— 它把一个本质上是空间的问题压平成了平面问题。既然大模型已经能看懂手写和印刷的题目，那真正有价值的一步不是生成答案，而是**把题目重新还原成能被转动的三维物体**。
+
+## 03 · 决策
+
+识别链路和展示链路拆开：
+
+**识别** —— 拍照上传 → 多模态模型（`glm-4v-flash`）读出题干中的点、线、面、垂直与平行关系
+**呈现** —— 按读出的关系生成 3D 模型，支持：
+- 顶点标注
+- 虚线表示被遮挡棱
+- 辅助线绘制
+- 可切换建系（换一个原点/坐标轴看同一个体）
+
+**解析** —— 另一个模型（`glm-4-flash`）生成学科网风格的分步解析，和 3D 模型并列显示
+
+同时内置近年高考与一模二模的精选立体几何题库，**全部数据保存在本机**，不上传。
+
+## 04 · 实现
+
+Vite + TypeScript 构建，Capacitor 打包 Android，GitHub Pages 托管。
+
+一个已知且明确记录的取舍：**API Key 目前内置在前端**。这是可以理解的快速验证选择，但意味着 Key 对任何打开开发者工具的人可见。后续应迁移到 Cloudflare Worker 之类的代理层。这个取舍在仓库 README 里被主动写了出来，而不是藏起来。
+
+## 05 · 证据与状态
+
+- 线上可访问：[lr0625.github.io/sha-zi-li-ji](https://lr0625.github.io/sha-zi-li-ji/)
+- 代码公开：[github.com/LR0625/sha-zi-li-ji](https://github.com/LR0625/sha-zi-li-ji)
+- 技术栈与模型调用可被任何人打开开发者工具验证
+
+**使用者数量与来源尚未统计**，所以这一页不写用户数，也不写任何使用数据。项目状态只标「已交付」—— 有可访问的成品，但拿不出「有人在用」的证据。
+
+<small>本页仍需确认：真实使用者数量与来源；迭代记录的触发原因；使用截图。</small>

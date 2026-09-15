@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectRow from '../../components/cards/ProjectRow.astro';
+import { getProjectsByMaturity, getProjects } from '../../lib/content';
+import { maturityLabel, maturityNote } from '../../lib/maturity';
+
+const groups = await getProjectsByMaturity();
+const total = (await getProjects()).length;
+
+const conceptCount = groups.find((g) => g.maturity === 'concept')?.items.length ?? 0;
+---
+
+<BaseLayout
+  path="/projects/"
+  title="Projects"
+  description={`${total} 个真实项目：包括已有真实用户并在持续迭代的产品、已交付的工具，以及一个明确标记为概念方案的提案。`}
+>
+  <div class="pt-16 pb-4 sm:pt-20">
+    <p class="eyebrow mb-3" data-reveal>Projects</p>
+    <h1 class="t-h1 text-ink" data-reveal>
+      做过的、在做的、和只想过没做的
+    </h1>
+    <p class="mt-4 max-w-[62ch] t-small text-ink-2" data-reveal>
+      按完成度分成三组，不是按技术分类。每一组的判定标准写在组标题下面 ——
+      这比标签本身更能说明一个项目到了哪一步。
+    </p>
+  </div>
+
+  <div class="pb-8">
+    {
+      groups.map((group) => (
+        <section class="pt-14 sm:pt-16" aria-labelledby={`group-${group.maturity}`}>
+          <header class="mb-2 border-b border-line-strong pb-4">
+            <div class="flex items-baseline justify-between gap-4">
+              <h2
+                id={`group-${group.maturity}`}
+                class="t-h3 text-ink"
+              >
+                {maturityLabel[group.maturity]}
+              </h2>
+              <span class="t-micro tabular-nums text-ink-3">
+                {group.items.length} 个
+              </span>
+            </div>
+            <p class="mt-1.5 t-micro text-ink-3">{maturityNote[group.maturity]}</p>
+          </header>
+
+          <div>
+            {group.items.map((project) => (
+              <ProjectRow project={project} />
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  {
+    conceptCount > 0 && (
+      <p class="mb-4 max-w-[64ch] border-l-2 border-line-strong pl-4 t-micro text-ink-3">
+        带「概念方案」标签的条目没有可运行实现，也没有真实用户。
+        把它放在这里是为了展示产品判断过程，而不是为了让作品列表看起来更长。
+      </p>
+    )
+  }
+</BaseLayout>

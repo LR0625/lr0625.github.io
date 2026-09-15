@@ -1,0 +1,92 @@
+/* ============================================================
+   设计令牌
+   ------------------------------------------------------------
+   亮色为默认主题，暗色通过 .dark 类切换（由 <html> 上的脚本设置）。
+   颜色用 CSS 自定义属性 + @theme inline 暴露给 Tailwind，
+   这样切换主题时不需要重新构建样式。
+   ============================================================ */
+
+@theme inline {
+  /* 语义色 */
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-secondary);
+  --color-ink-3: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-on: var(--accent-on);
+
+  /* 字体：Inter 负责拉丁与数字，中文走系统栈（不加载中文 Web 字体） */
+  --font-sans:
+    'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC',
+    sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* 排版尺度 */
+  --text-display: clamp(2.5rem, 6vw, 4.25rem);
+  --text-h1: clamp(1.875rem, 3.6vw, 2.75rem);
+  --text-h2: clamp(1.375rem, 2.2vw, 1.75rem);
+  --text-h3: 1.125rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-micro: 0.75rem;
+
+  /* 圆角：不覆盖 Tailwind 内置尺度，直接沿用 md=6px / lg=8px / xl=12px */
+
+  /* 动效 */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+}
+
+/* ------------------------------------------------------------ 亮色（默认） */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #fafafa;
+  --surface: #ffffff;
+  --border: #e8e8ea;
+  --border-strong: #d2d2d6;
+
+  --text: #0a0a0a;
+  --text-secondary: #55555e;
+  --text-tertiary: #8a8a94;
+
+  /* 品牌色：用于装饰、边框、焦点环、大字号 */
+  --accent: #f0561d;
+  /* 可读强调色：链接与正文级强调文字，白底对比度 5.18:1 */
+  --accent-ink: #c2410c;
+  /* 实心按钮底色，配 --accent-on 文字，对比度 5.18:1 */
+  --accent-solid: #c2410c;
+  --accent-on: #ffffff;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------ 暗色 */
+.dark {
+  --bg: #0a0a0a;
+  --bg-subtle: #101012;
+  --surface: #141416;
+  --border: #26262b;
+  --border-strong: #3a3a42;
+
+  --text: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+
+  --accent: #f0561d;
+  /* 暗底上提亮，对比度 7.62:1 */
+  --accent-ink: #ff7a47;
+  --accent-solid: #f0561d;
+  --accent-on: #0a0a0a;
+
+  color-scheme: dark;
+}

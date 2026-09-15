@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef1f6">
+<meta name="robots" content="noindex, nofollow"><!-- 公开链接用：不要让搜索引擎收录 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="zmh的上班日记">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>zmh的上班日记</title>
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="app">
+
+    <div class="screens" id="screens">
+
+      <!-- ================= 今日 ================= -->
+      <section class="screen" id="screen-today">
+
+        <div class="datebar">
+          <h1 class="date-text" id="dateText">今天</h1>
+          <span class="clock" id="liveClock">00:00:00</span>
+        </div>
+
+        <section class="card hero">
+          <p class="hero-label">今日工时</p>
+          <p class="hero-total" id="heroTotal"><b>00</b><span>小时</span><b>00</b><span>分钟</span></p>
+          <div class="status is-empty" id="statusChip">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="status-text" id="statusText">今天还没有记录</span>
+            <span class="status-sub" id="statusSub"></span>
+          </div>
+
+          <!-- 常驻鼓励语：打开就能看到，打卡后会换一句；点一下可以再换一句 -->
+          <button class="hero-msg" id="heroMsg" type="button" role="status" aria-live="polite">打卡成功，人还活着。</button>
+        </section>
+
+        <div class="actions">
+          <button class="btn is-primary" id="btnIn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5"/><path d="M6 11l6-6 6 6"/></svg>
+            <span>上班打卡</span>
+          </button>
+          <button class="btn is-muted" id="btnOut" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15"/><path d="M6 13l6 6 6-6"/></svg>
+            <span>下班打卡</span>
+          </button>
+        </div>
+
+        <!-- 工资池：只表示「进度」，不是实发工资 -->
+        <section class="card pool-card" id="poolCard">
+          <div class="pool-head">
+            <span class="pool-title">工资池<span class="pool-month" id="poolMonth"></span></span>
+            <button class="link-btn" id="poolSetup" type="button">设置</button>
+          </div>
+          <p class="pool-amount" id="poolAmount"><b id="poolNow">—</b><span class="pool-of" id="poolGoal"></span></p>
+          <div class="pool-bar" aria-hidden="true"><span class="pool-bar-fill" id="poolBarFill"></span></div>
+          <div class="pool-line">
+            <span class="pool-percent" id="poolPercent">0.00%</span>
+            <span class="pool-sub" id="poolSub"></span>
+          </div>
+          <p class="pool-note" id="poolNote"></p>
+        </section>
+
+        <section class="card list-card">
+          <div class="list-head">
+            <h2>工作时段 <span class="list-count" id="logCount">0 段</span></h2>
+            <span class="list-ops">
+              <button class="link-btn" id="yesterdayAdd" type="button" hidden>补昨天</button>
+              <button class="link-btn" id="todayAdd" type="button">＋ 添加</button>
+            </span>
+          </div>
+          <ul class="log" id="logList"></ul>
+          <p class="log-empty" id="logEmpty">今天还没有记录</p>
+        </section>
+
+        <p class="tip-line" id="tipLine"></p>
+
+      </section>
+
+      <!-- ================= 日历 ================= -->
+      <section class="screen" id="screen-calendar" hidden>
+        <div class="datebar">
+          <h1 class="date-text">日历</h1>
+          <button class="chip-btn" id="calToday" type="button" hidden>回到本月</button>
+        </div>
+
+        <section class="card cal-card">
+          <div class="cal-head">
+            <button class="cal-nav" id="calPrev" type="button" aria-label="上个月">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <span class="cal-title" id="calTitle">—</span>
+            <button class="cal-nav" id="calNext" type="button" aria-label="下个月">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="cal-week">
+            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+          </div>
+
+          <div class="cal-grid" id="calGrid"></div>
+
+          <div class="cal-foot">
+            <span class="cal-foot-label">本月合计</span>
+            <span class="cal-foot-value" id="calMonthSum">0小时00分钟</span>
+            <span class="cal-foot-days" id="calMonthDays">本月还没有记录</span>
+          </div>
+        </section>
+
+        <p class="tip-line">点任意一天，可以查看、补录、修改当天的工作区间。</p>
+      </section>
+
+      <!-- ================= 课表 ================= -->
+      <section class="screen" id="screen-timetable" hidden>
+        <div class="datebar">
+          <h1 class="date-text">课表</h1>
+          <button class="chip-btn" id="ttImport" type="button">导入课表</button>
+        </div>
+
+        <div class="card tt-summary" id="ttSummary" hidden>
+          <span class="tt-summary-main" id="ttSummaryText">—</span>
+          <span class="tt-summary-sub" id="ttSummarySub"></span>
+          <span class="tt-summary-week" id="ttWeekLoad" hidden></span>
+        </div>
+
+        <!-- 第几周 / 作息时间表 -->
+        <div class="card tt-week" id="ttWeek" hidden>
+          <span class="tt-week-text" id="ttWeekText">—</span>
+          <button class="tt-week-btn" id="ttWeekBtn" type="button">设置</button>
+        </div>
+
+        <div class="card tt-week" id="ttPeriod" hidden>
+          <span class="tt-week-text" id="ttPeriodText">—</span>
+          <button class="tt-week-btn" id="ttPeriodBtn" type="button">设置</button>
+        </div>
+
+        <!-- 周视图 / 列表 切换 -->
+        <div class="tt-switch" id="ttSwitch" hidden>
+          <button type="button" data-tt="grid" class="is-on">周视图</button>
+          <button type="button" data-tt="list">列表</button>
+        </div>
+
+        <!-- 周视图：一整个星期的网格 -->
+        <div class="tt-grid-wrap" id="ttGridWrap" hidden>
+          <div class="tt-nav" id="ttNav" hidden>
+            <button class="tt-nav-btn" id="ttPrev" type="button" aria-label="上一周">‹</button>
+            <span class="tt-nav-text" id="ttNavText">—</span>
+            <button class="tt-nav-btn" id="ttNext" type="button" aria-label="下一周">›</button>
+            <button class="tt-nav-back" id="ttThisWeek" type="button" hidden>回到本周</button>
+          </div>
+          <div class="tt-grid" id="ttGrid"></div>
+        </div>
+
+        <!-- 列表视图：按星期分组 -->
+        <div class="tt-list" id="ttList"></div>
+
+        <p class="log-empty" id="ttEmpty">
+          还没有课程，点右上角<b>「导入课表」</b>
+        </p>
+
+        <button class="btn-add-lg" id="ttAddOne" type="button">＋ 添加一门课程</button>
+        <p class="tip-line">点任意一门课程，可以修改或删除。</p>
+      </section>
+
+      <!-- ================= 我的 ================= -->
+      <section class="screen" id="screen-me" hidden>
+        <div class="datebar">
+          <h1 class="date-text">我的</h1>
+          <button class="chip-btn" id="meToday" type="button" hidden>回到本月</button>
+        </div>
+
+        <section class="card month-bar">
+          <button class="cal-nav" id="mePrev" type="button" aria-label="上个月">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <span class="cal-title" id="meMonth">—</span>
+          <button class="cal-nav" id="meNext" type="button" aria-label="下个月">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </section>
+
+        <!-- 第一优先：工资进度（工资池） -->
+        <section class="card pay-card is-progress">
+          <div class="pay-head">
+            <span class="stat-label" id="payTitle">本月工资进度</span>
+            <button class="link-btn" id="salaryEdit" type="button">设置</button>
+          </div>
+          <p class="pay-value" id="payAmount"><b class="pay-now" id="payNow">—</b><span class="pay-of" id="payOf"></span></p>
+          <div class="pay-bar" aria-hidden="true"><span class="pay-bar-fill" id="payBarFill"></span></div>
+          <p class="pay-percent" id="payPercent">0.00%</p>
+          <p class="pay-more" id="payMore"></p>
+          <p class="pay-hint" id="payHint"></p>
+        </section>
+
+        <!-- 第二优先：累计工时 -->
+        <section class="card stat">
+          <span class="stat-label" id="hoursLabel">本月累计工时</span>
+          <p class="stat-value" id="statHours">00小时00分钟</p>
+          <p class="stat-hint" id="hoursSecHint"></p>
+        </section>
+
+        <!-- 第三优先：目标工时　第四优先：目标时薪 -->
+        <div class="stat-grid">
+          <section class="card stat">
+            <span class="stat-label">本月目标工时</span>
+            <p class="stat-value" id="statTarget">未设置</p>
+            <p class="stat-hint" id="targetHint">点右上角「设置」填一个</p>
+          </section>
+          <section class="card stat is-accent">
+            <span class="stat-label">目标时薪</span>
+            <div class="stat-rate-line">
+              <span class="stat-value" id="statGoalRate">—</span>
+              <span class="stat-unit" id="goalRateUnit" hidden>/ 小时</span>
+            </div>
+            <p class="stat-hint" id="goalRateHint">—</p>
+          </section>
+        </div>
+
+        <!-- 计划本身（月工资 + 目标工时都写在这里） -->
+        <section class="card pay-card">
+          <div class="pay-head">
+            <span class="stat-label">月工资</span>
+          </div>
+          <p class="pay-value is-empty" id="salaryValue">未设置</p>
+          <p class="pay-hint" id="salaryHint"></p>
+        </section>
+
+        <div class="stat-grid">
+          <section class="card stat">
+            <span class="stat-label">工作天数</span>
+            <p class="stat-value" id="statDays">0 天</p>
+          </section>
+          <section class="card stat">
+            <span class="stat-label">实际平均时薪<span class="stat-tag">仅统计</span></span>
+            <div class="stat-rate-line">
+              <span class="stat-value" id="statRate">—</span>
+              <span class="stat-unit" id="rateUnit" hidden>/ 小时</span>
+            </div>
+            <p class="stat-hint" id="rateHint">设置月工资后自动计算</p>
+          </section>
+        </div>
+
+        <div class="tip-line tip-line-row">
+          <span>数据只存这台设备</span>
+          <button class="link-btn" id="backupBtn" type="button">备份 / 恢复</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ================= 底部导航 ================= -->
+    <nav class="tabbar" role="tablist" aria-label="主导航">
+      <button class="tab is-active" id="tab-today" data-view="today" type="button" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>
+        <span>今日</span>
+      </button>
+      <button class="tab" id="tab-calendar" data-view="calendar" type="button" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+        <span>日历</span>
+      </button>
+      <button class="tab" id="tab-timetable" data-view="timetable" type="button" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9.5h18"/><path d="M9.5 9.5V21"/></svg>
+        <span>课表</span>
+      </button>
+      <button class="tab" id="tab-me" data-view="me" type="button" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        <span>我的</span>
+      </button>
+    </nav>
+
+    <!-- ================= 轻提示 ================= -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ================= 弹层：某一天的记录 ================= -->
+    <div class="sheet" id="daySheet" hidden>
+      <div class="sheet-backdrop" data-close="daySheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="dayTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="dayTitle">—</h2>
+            <p class="sheet-sub" id="daySum">—</p>
+          </div>
+          <button class="sheet-x" id="dayClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+        <div class="sheet-body">
+          <ul class="log" id="dayList"></ul>
+          <p class="log-empty" id="dayEmpty">这天还没有记录，点下方按钮补录一段。</p>
+        </div>
+        <button class="btn-add-lg" id="dayAdd" type="button">＋ 添加一段</button>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：新增 / 编辑一段 ================= -->
+    <div class="sheet sheet-top" id="editSheet" hidden>
+      <div class="sheet-backdrop" data-close="editSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="editTitle">编辑这一段</h2>
+            <p class="sheet-sub" id="editSub">—</p>
+          </div>
+          <button class="sheet-x" id="editClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <div class="time-fields">
+          <label class="field">
+            <span class="field-label">开始时间</span>
+            <input class="field-input" type="time" id="editStart" step="60">
+          </label>
+          <label class="field">
+            <span class="field-label">结束时间</span>
+            <input class="field-input" type="time" id="editEnd" step="60">
+          </label>
+        </div>
+
+        <p class="field-hint" id="editHint">结束时间留空 = 仍在进行中</p>
+
+        <label class="field note-field">
+          <span class="field-label">备注</span>
+          <input class="field-note" id="editNote" type="text" maxlength="100"
+                 autocomplete="off" placeholder="这一段做了什么，例如：整理实验数据">
+        </label>
+        <div class="note-quick" id="noteQuick" role="group" aria-label="常用备注">
+          <button type="button" data-note="上课">上课</button>
+          <button type="button" data-note="备课">备课</button>
+          <button type="button" data-note="晚辅">晚辅</button>
+          <button type="button" data-note="监考">监考</button>
+          <button type="button" data-note="开会">开会</button>
+          <button type="button" data-note="批改作业">批改作业</button>
+        </div>
+
+        <p class="form-msg" id="editMsg" hidden></p>
+
+        <div class="sheet-actions">
+          <button class="btn-danger" id="editDelete" type="button">删除</button>
+          <button class="btn-save" id="editSave" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：备份 / 恢复 ================= -->
+    <div class="sheet sheet-top" id="backupSheet" hidden>
+      <div class="sheet-backdrop" data-close="backupSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="backupTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="backupTitle">备份 / 恢复</h2>
+            <p class="sheet-sub" id="backupSub">换手机、清缓存之前先导出一次</p>
+          </div>
+          <button class="sheet-x" id="backupClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <div class="course-form">
+          <label class="field">
+            <span class="field-label">备份内容</span>
+            <textarea class="field-area" id="backupText" rows="6" autocomplete="off"
+              placeholder="点「生成备份」会把全部记录生成在这，长按复制走（发微信、存网盘都行）；要恢复时把备份内容粘到这里"></textarea>
+          </label>
+        </div>
+
+        <button class="btn-add-lg" id="backupMake" type="button">生成备份</button>
+        <button class="btn-add-lg" id="backupFile" type="button">下载成文件</button>
+        <button class="btn-add-lg btn-add-alt" id="backupRestore" type="button">从这段内容恢复</button>
+
+        <p class="form-msg" id="backupMsg" hidden></p>
+        <p class="field-hint" id="backupStat">—</p>
+
+        <!-- 清理（开发/测试用）：要连点两次确认，不会悄悄删东西 -->
+        <button class="link-btn backup-reset" id="backupReset" type="button">清空这台设备上的所有数据…</button>
+
+        <div class="sheet-actions no-delete">
+          <button class="btn-save" id="backupDone" type="button">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：工资设置 ================= -->
+    <div class="sheet" id="salarySheet" hidden>
+      <div class="sheet-backdrop" data-close="salarySheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="salaryTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="salaryTitle">设置月工资</h2>
+            <p class="sheet-sub" id="salarySub">—</p>
+          </div>
+          <button class="sheet-x" id="salaryClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <label class="field">
+          <span class="field-label">月工资（元）</span>
+          <div class="money-input">
+            <span class="money-prefix" aria-hidden="true">¥</span>
+            <input class="money-field" id="salaryInput" type="text" inputmode="decimal"
+                   autocomplete="off" placeholder="例如 8000" aria-label="月工资">
+          </div>
+        </label>
+
+        <label class="field">
+          <span class="field-label">本月目标工时（小时）</span>
+          <div class="money-input">
+            <input class="money-field" id="targetInput" type="text" inputmode="decimal"
+                   autocomplete="off" placeholder="例如 160" aria-label="本月目标工时">
+            <span class="money-suffix" aria-hidden="true">小时</span>
+          </div>
+        </label>
+
+        <div class="salary-fill-row">
+          <span class="field-sub" id="salaryMonthNote">—</span>
+          <button class="link-btn" id="salaryFillLast" type="button" hidden>按上月工时填入</button>
+        </div>
+
+        <label class="check-row">
+          <input type="checkbox" id="salaryDefault" checked>
+          <span>以后月份也沿用</span>
+        </label>
+
+        <p class="form-msg is-error" id="salaryMsg" hidden></p>
+        <p class="field-hint" id="salaryPreview">—</p>
+
+        <div class="sheet-actions no-delete">
+          <button class="btn-save" id="salarySave" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 全屏页：导入课表（手动录入） ================= -->
+    <div class="overlay" id="importScreen" hidden>
+      <header class="ov-head">
+        <button class="ov-back" id="importBack" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          <span>返回</span>
+        </button>
+        <h2 class="ov-title">导入课表</h2>
+        <span class="ov-count" id="importCount">0 门</span>
+      </header>
+
+      <div class="ov-body" id="importBody">
+        <p class="ov-hint">全部加完后点底部<b>「确认导入」</b></p>
+
+        <div class="ov-list" id="importList"></div>
+
+        <p class="log-empty" id="importEmpty">还没有课程</p>
+
+        <button class="btn-add-lg" id="importPaste" type="button">粘贴课表文字（推荐）</button>
+        <button class="btn-add-lg btn-add-alt" id="importAdd" type="button">＋ 手动添加一门课程</button>
+      </div>
+
+      <!-- 已有课表时：合并 / 替换 / 取消（绝不悄悄把原来的弄没） -->
+      <div class="merge-box" id="mergeBox" hidden>
+        <p class="merge-title" id="mergeTitle">—</p>
+        <p class="merge-sub" id="mergeSub"></p>
+        <button class="btn-add-lg" id="mergeKeep" type="button">合并（保留原有，只加新的）</button>
+        <button class="btn-add-lg btn-add-alt" id="mergeReplace" type="button">替换全部</button>
+        <button class="link-btn merge-cancel" id="mergeCancel" type="button">取消</button>
+      </div>
+
+      <footer class="ov-foot">
+        <button class="btn-danger" id="importCancel" type="button">取消</button>
+        <button class="btn-save" id="importConfirm" type="button">确认导入</button>
+      </footer>
+    </div>
+
+    <!-- ================= 弹层：课程编辑（新增 / 修改） ================= -->
+    <div class="sheet sheet-top" id="courseSheet" hidden>
+      <div class="sheet-backdrop" data-close="courseSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="courseTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="courseTitle">添加课程</h2>
+            <p class="sheet-sub" id="courseSub">—</p>
+          </div>
+          <button class="sheet-x" id="courseClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <div class="course-form">
+          <label class="field">
+            <span class="field-label">课程名称</span>
+            <input class="field-note" id="courseName" type="text" maxlength="40"
+                   autocomplete="off" placeholder="例如：高等数学">
+          </label>
+
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">开始时间</span>
+              <input class="field-input" id="courseStart" type="time" step="60">
+            </label>
+            <label class="field">
+              <span class="field-label">结束时间</span>
+              <input class="field-input" id="courseEnd" type="time" step="60">
+            </label>
+          </div>
+
+          <div class="field" id="coursePeriodField" hidden>
+            <span class="field-label" id="coursePeriodLbl">第几节<span class="field-label-sub">（点一下自动填好上课时间）</span></span>
+            <div class="period-picker" id="coursePeriods" role="group" aria-label="选择第几节"></div>
+            <p class="field-hint" id="coursePeriodHint"></p>
+          </div>
+
+          <div class="field">
+            <span class="field-label">星期</span>
+            <div class="wd-picker" id="courseWeekdays" role="group" aria-label="选择星期">
+              <button type="button" data-wd="1">一</button>
+              <button type="button" data-wd="2">二</button>
+              <button type="button" data-wd="3">三</button>
+              <button type="button" data-wd="4">四</button>
+              <button type="button" data-wd="5">五</button>
+              <button type="button" data-wd="6">六</button>
+              <button type="button" data-wd="7">日</button>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">教师</span>
+              <input class="field-note" id="courseTeacher" type="text" maxlength="20"
+                     autocomplete="off" placeholder="未设置">
+            </label>
+            <label class="field">
+              <span class="field-label">地点</span>
+              <input class="field-note" id="courseLocation" type="text" maxlength="30"
+                     autocomplete="off" placeholder="未设置">
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">周次（不填＝每周）</span>
+              <input class="field-note" id="courseWeeks" type="text" maxlength="20"
+                     autocomplete="off" placeholder="如 1-16周 / 第4周 / 13到23">
+            </label>
+            <label class="field">
+              <span class="field-label">备注</span>
+              <input class="field-note" id="courseRemark" type="text" maxlength="40"
+                     autocomplete="off" placeholder="未设置">
+            </label>
+          </div>
+          <p class="field-hint" id="courseWeeksHint"></p>
+        </div>
+
+        <p class="form-msg" id="courseMsg" hidden></p>
+
+        <div class="sheet-actions" id="courseActions">
+          <button class="btn-danger" id="courseDelete" type="button">删除</button>
+          <button class="btn-save" id="courseSave" type="button">保存</button>
+        </div>
+
+        <button class="btn-add-lg" id="courseSaveNext" type="button" hidden>保存，再添一门</button>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：粘贴课表文字 ================= -->
+    <div class="sheet sheet-top" id="pasteSheet" hidden>
+      <div class="sheet-backdrop" data-close="pasteSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="pasteTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="pasteTitle">粘贴课表文字</h2>
+            <p class="sheet-sub">三种来源都可以，粘进来就行</p>
+          </div>
+          <button class="sheet-x" id="pasteClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <ol class="paste-how">
+          <li>在学校网页上<b>全选复制</b>课表，粘进下面的框</li>
+          <li>截图的话，用手机自带文字识别（相册里长按文字 → 拷贝）</li>
+        </ol>
+
+        <label class="field">
+          <span class="field-label">课表内容</span>
+          <textarea class="field-area" id="pasteInput" rows="9" autocomplete="off"
+            placeholder="高等数学 张老师 教学楼A101 周一 08:00-09:40 1-16周&#10;线性代数 李老师 教学楼A102 周二 08:00-09:40 1-16周"></textarea>
+        </label>
+
+        <p class="form-msg" id="pasteMsg" hidden></p>
+
+        <div class="sheet-actions no-delete">
+          <button class="btn-save" id="pasteParse" type="button">解析并加入列表</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：学期开始日期 ================= -->
+    <div class="sheet" id="weekSheet" hidden>
+      <div class="sheet-backdrop" data-close="weekSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="weekTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="weekTitle">本学期开始日期</h2>
+            <p class="sheet-sub" id="weekSub">用来判断现在是第几周（「1-8周」这类课靠它过滤）</p>
+          </div>
+          <button class="sheet-x" id="weekClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <label class="field">
+          <span class="field-label">开学第一天（那周的周一）</span>
+          <input class="field-input" id="weekInput" type="date">
+        </label>
+
+        <p class="form-msg" id="weekMsg" hidden></p>
+        <p class="field-hint">
+          填了之后，只有「本周实际上」的课才会算进工时；不填的话所有课都算（宁可多算也不漏）。
+        </p>
+
+        <div class="sheet-actions">
+          <button class="btn-danger" id="weekClear" type="button">清除</button>
+          <button class="btn-save" id="weekSave" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 弹层：作息时间表 ================= -->
+    <div class="sheet sheet-top" id="periodSheet" hidden>
+      <div class="sheet-backdrop" data-close="periodSheet"></div>
+      <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="periodTitle">
+        <div class="sheet-grab" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="periodTitle">作息时间表</h2>
+            <p class="sheet-sub" id="periodSub">每节的开始和结束都能单独改 —— 白天 40 分钟，晚辅可以更长</p>
+          </div>
+          <button class="sheet-x" id="periodClose" type="button" aria-label="关闭">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+          </button>
+        </header>
+
+        <div class="period-batch">
+          <p class="period-batch-title">批量填好（填完还能逐节改时长）</p>
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">第 1 节开始</span>
+              <input class="field-input" id="pbStart" type="time" step="60" value="08:00">
+            </label>
+            <label class="field">
+              <span class="field-label">课间休息（分钟）</span>
+              <input class="field-note" id="pbGap" type="number" min="0" max="60" step="5" value="10">
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">一共几节</span>
+              <input class="field-note" id="pbCount" type="number" min="1" max="20" value="8">
+            </label>
+            <label class="field">
+              <span class="field-label">默认每节时长（分钟）</span>
+              <input class="field-note" id="pbLen" type="number" min="10" max="240" step="5" value="40">
+            </label>
+          </div>
+          <button class="btn-add-lg" id="pbFill" type="button">按这个规则填好</button>
+        </div>
+
+        <div class="period-list" id="periodList"></div>
+
+        <p class="form-msg" id="periodMsg" hidden></p>
+
+        <div class="sheet-actions">
+          <button class="btn-danger" id="periodReset" type="button">恢复默认</button>
+          <button class="btn-save" id="periodSave" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 文案库：想加文案直接改 messages/ 里的文件，不用动 app.js -->
+<script src="messages/start.js"></script>
+<script src="messages/end.js"></script>
+<script src="messages/lateNight.js"></script>
+<script src="messages/session.js"></script>
+<script src="messages/weekend.js"></script>
+<script src="messages/rest.js"></script>
+<script src="messages/salary.js"></script>
+<script src="messages/general.js"></script>
+<script src="app.js" defer></script>
+</body>
+</html>

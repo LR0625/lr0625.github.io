@@ -1,0 +1,63 @@
+---
+import type { Thinking } from '../../lib/content';
+import { thinkingHref } from '../../lib/content';
+
+/**
+ * 思考卡片。
+ * 结论（summary）是主体，标题是索引 —— 因为招募者读的是判断，
+ * 不是标题文学。日期用系统格式，避免手写字符串产生不一致。
+ */
+interface Props {
+  post: Thinking;
+  /** 是否显示「来自项目」的出处 */
+  showSource?: boolean;
+}
+
+const { post, showSource = true } = Astro.props;
+const { data } = post;
+
+const dateLabel = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}).format(data.date);
+---
+
+<article class="group relative border-b border-line last:border-b-0" data-reveal>
+  <div class="py-6 sm:py-7">
+    <div class="mb-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 t-micro text-ink-3">
+      <time datetime={data.date.toISOString()} class="tnum">{dateLabel}</time>
+      {
+        showSource && data.fromProject && (
+          <>
+            <span class="opacity-40" aria-hidden="true">·</span>
+            <span>来自项目</span>
+          </>
+        )
+      }
+    </div>
+
+    <h3 class="t-h3 text-ink">
+      <a
+        href={thinkingHref(post.id)}
+        class="before:absolute before:inset-0 transition-colors duration-150 group-hover:text-accent-ink"
+      >
+        {data.title}
+      </a>
+    </h3>
+
+    <p class="mt-2 max-w-[64ch] t-small text-ink-2">
+      {data.summary}
+    </p>
+
+    {
+      data.tags.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1 t-micro text-ink-3">
+          {data.tags.map((tag) => (
+            <span>{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>

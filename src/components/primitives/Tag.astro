@@ -1,0 +1,21 @@
+---
+/** 小标签。成熟度、用户数、指标都用它，保持同一种视觉重量。 */
+interface Props {
+  tone?: 'neutral' | 'accent';
+  class?: string;
+}
+
+const { tone = 'neutral', class: className = '' } = Astro.props;
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-[3px] text-[11.5px] leading-none whitespace-nowrap',
+    tone === 'accent'
+      ? 'border-accent/35 text-accent-ink'
+      : 'border-line text-ink-3',
+    className,
+  ]}
+>
+  <slot />
+</span>

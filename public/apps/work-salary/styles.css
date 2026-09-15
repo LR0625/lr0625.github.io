@@ -1,0 +1,2391 @@
+/* ============================================================
+   zmh的上班日记 · 样式
+   手机端优先，桌面端自动套上手机外框
+   ============================================================ */
+
+:root {
+  --bg:        #eef1f6;
+  --surface:   #ffffff;
+  --surface-2: #f7f8fb;
+  --ink:       #131a26;
+  --ink-2:     #5d6779;
+  --ink-3:     #98a2b3;
+  --ink-4:     #b9c1cf;
+  --line:      #eaedf3;
+  --brand:     #4f6ef7;
+  --brand-2:   #7a5cf6;
+  --ok:        #10b981;
+  --danger:    #d94848;
+  --radius:    20px;
+  --shadow:    0 1px 2px rgba(16, 24, 40, .04), 0 10px 26px rgba(16, 24, 40, .06);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------------- 手机外框（仅宽屏显示） ---------------- */
+
+/* 老 WebView 不认识 dvh：先给 100vh，认识的浏览器再用 dvh 覆盖。
+   少了这一行，Android 8.1 上整个 App 壳会塌成内容高度、底部导航跑出屏幕。 */
+.device { height: 100vh; height: 100dvh; width: 100%; }
+
+.app {
+  position: relative;          /* 弹层与提示条都以它为定位基准 */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+@media (min-width: 560px) {
+  body {
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(900px 500px at 15% 0%, #e4e9f7 0%, transparent 60%),
+      radial-gradient(700px 500px at 90% 100%, #eae4f9 0%, transparent 55%),
+      #e9edf4;
+  }
+  .device {
+    width: 402px;
+    height: 844px;
+    max-height: 94vh;
+    padding: 11px;
+    border-radius: 46px;
+    background: linear-gradient(150deg, #333b4d, #0e131c 55%);
+    box-shadow:
+      0 40px 80px -20px rgba(12, 18, 32, .45),
+      0 2px 6px rgba(12, 18, 32, .2),
+      inset 0 0 0 1px rgba(255, 255, 255, .07);
+  }
+  .app { border-radius: 36px; }
+}
+
+/* ---------------- 滚动区 ---------------- */
+
+.screens {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen {
+  padding: 26px 18px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 老 WebView 不支持 flex 的 gap，用相邻兄弟 margin 兜底（间距必需） */
+.screen > * + * { margin-top: 14px; }
+
+.screen[hidden] { display: none; }
+
+/* ---------------- 顶部日期 + 实时时钟 ---------------- */
+
+.datebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 4px;
+  min-height: 30px;
+}
+
+.date-text {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: .2px;
+}
+
+.clock {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ---------------- 卡片 ---------------- */
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ---------------- 今日工时 ---------------- */
+
+.hero { padding: 22px 20px 18px; }
+
+.hero-label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: .4px;
+}
+
+.hero-total {
+  margin: 8px 0 0;
+  display: flex;
+  align-items: baseline;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.hero-total b {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.hero-total span {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 0 5px 0 3px;
+}
+
+.hero-total span:last-child { margin-right: 0; }
+
+/* ---------------- 状态条 ---------------- */
+
+.status {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 8px 13px 8px 11px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  max-width: 100%;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-4);
+  flex: none;
+}
+
+.status-text {
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+.status-sub {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.status-sub:empty { display: none; }
+
+.status.is-working { background: rgba(16, 185, 129, .1); }
+.status.is-working .status-dot {
+  background: var(--ok);
+  animation: pulse 1.8s ease-out infinite;
+}
+.status.is-working .status-text { color: #067a55; }
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, .55); }
+  70%  { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ---------------- 两个大按钮 ---------------- */
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn {
+  height: 66px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 16.5px;
+  font-weight: 650;
+  letter-spacing: .3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform .12s ease, box-shadow .18s ease,
+              background-color .18s ease, color .18s ease, opacity .18s ease;
+}
+
+.btn svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+  margin-right: 7px;   /* 代替 flex gap */
+}
+
+.btn:active { transform: scale(.975); }
+
+.btn.is-primary {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+  box-shadow: 0 10px 22px -6px rgba(79, 110, 247, .55);
+}
+.btn.is-primary:active { box-shadow: 0 6px 14px -6px rgba(79, 110, 247, .5); }
+
+.btn.is-muted {
+  background: var(--surface-2);
+  color: var(--ink-4);
+  border-color: var(--line);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn.is-muted:active { transform: scale(1); }
+
+.btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---------------- 记录列表 ---------------- */
+
+.list-card { padding: 4px 18px 14px; }
+
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 0 4px;
+}
+
+.list-head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.list-count {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-3);
+  margin-left: 4px;
+}
+
+.link-btn {
+  border: 0;
+  background: none;
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  padding: 6px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  flex: none;
+}
+
+.link-btn:active { opacity: .6; }
+
+.log { list-style: none; margin: 0; padding: 0; }
+
+.log-row {
+  display: flex;
+  align-items: center;
+  margin: 0 -10px;
+  padding: 13px 10px;
+  border-radius: 13px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background-color .14s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.log-row > * + * { margin-left: 11px; }   /* 代替 flex gap */
+
+.log-row:last-child { border-bottom: none; }
+.log-row:active { background: var(--surface-2); }
+.log-row:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+
+.log-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cdd4e0;
+  flex: none;
+  align-self: flex-start;
+  margin-top: 7px;
+}
+
+.log-row.is-live .log-dot {
+  background: var(--ok);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+/* 第一行：时间区间 + 本段时长；第二行：备注 */
+.log-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.log-main > * + * { margin-top: 3px; }   /* 代替 flex gap */
+
+.log-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.log-line > * + * { margin-left: 10px; }
+
+.log-range {
+  font-size: 15.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: .2px;
+}
+
+.log-dash { color: var(--ink-4); font-weight: 500; margin: 0 2px; }
+.log-now { color: var(--ok); font-weight: 650; }
+
+.log-dur {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  flex: none;
+}
+
+.log-row.is-live .log-dur { color: #067a55; }
+
+/* 备注：最多两行，超出省略 */
+.log-note {
+  font-size: 12.5px;
+  font-weight: 550;
+  line-height: 1.45;
+  color: var(--ink-2);
+  overflow: hidden;
+  word-break: break-word;        /* 老 WebView 兜底 */
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.log-chevron {
+  flex: none;
+  color: #c6cddb;
+  display: grid;
+  place-items: center;
+}
+
+.log-chevron svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.log-empty {
+  margin: 6px 0 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.log-empty[hidden] { display: none; }
+
+.tip-line {
+  margin: 0 4px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* ---------------- 日历 ---------------- */
+
+.cal-card { padding: 12px 14px 8px; }
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0 12px;
+}
+
+.cal-title {
+  font-size: 15.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.cal-nav {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 0;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .12s ease, background-color .16s ease;
+}
+
+.cal-nav:active { transform: scale(.92); background: #eef1f7; }
+
+.cal-nav svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cal-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  padding-bottom: 5px;
+}
+
+.cal-week span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+/* 高度下限保证窄屏（320）上格子仍有 44px 的点击高度；
+   老 WebView 不支持 aspect-ratio，所以在 @supports 外面先给固定高度 */
+.cal-blank { height: 46px; min-height: 44px; }
+
+.cal-day {
+  height: 46px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-family: inherit;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: pointer;
+  transition: background-color .16s ease, transform .12s ease;
+}
+
+.cal-day:active { transform: scale(.94); }
+
+.cal-dnum {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.cal-dur {
+  font-size: 9px;
+  font-weight: 650;
+  color: var(--ink-3);
+  letter-spacing: -.2px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.cal-day.has-data { background: rgba(79, 110, 247, .085); }
+.cal-day.has-data .cal-dur { color: var(--brand); }
+
+.cal-day.is-today { box-shadow: inset 0 0 0 1.5px rgba(79, 110, 247, .5); }
+.cal-day.is-today .cal-dnum { color: var(--brand); }
+
+.cal-day.is-selected,
+.cal-day.is-selected.has-data { background: var(--brand); box-shadow: none; }
+.cal-day.is-selected .cal-dnum,
+.cal-day.is-selected .cal-dur { color: #fff; }
+
+/* 认识 aspect-ratio 的浏览器才用比例，否则用上面的固定高度 */
+@supports (aspect-ratio: 1 / 1) {
+  .cal-blank,
+  .cal-day { height: auto; aspect-ratio: 1 / 1.05; }
+}
+
+.cal-foot {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px 2px 10px;
+  border-top: 1px solid var(--line);
+}
+
+.cal-foot-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.cal-foot-value {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.cal-foot-days {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-3);
+}
+
+.chip-btn {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.chip-btn[hidden] { display: none; }
+.chip-btn:active { transform: scale(.96); }
+
+/* ---------------- 我的：月份切换 + 工资统计 ---------------- */
+
+.month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+}
+
+.pay-card { padding: 16px 18px 18px; }
+
+.pay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: .3px;
+}
+
+.pay-value {
+  margin: 8px 0 0;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -.6px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.15;
+}
+
+.pay-hint {
+  margin: 7px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.stat { padding: 16px 16px 17px; min-width: 0; }
+
+.stat-value {
+  margin: 9px 0 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.2;
+}
+
+.stat-hint {
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat.is-accent {
+  background: linear-gradient(150deg, #f5f7ff, #edf1fe);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 8px 20px rgba(79, 110, 247, .1);
+}
+
+.stat.is-accent .stat-value { color: var(--brand); }
+
+.stat-rate-line {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-top: 9px;
+}
+
+.stat-rate-line .stat-value { margin: 0; }
+
+.stat-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.stat-unit[hidden] { display: none; }
+
+/* 月初工时少时金额会变长（如 ¥4000.00），自动缩小以免挤出卡片 */
+.stat-value.is-long { font-size: 17px; letter-spacing: -.6px; }
+
+.pay-value.is-empty,
+.stat-value.is-empty {
+  color: var(--ink-4);
+  font-weight: 650;
+}
+
+/* 金额输入 */
+
+.money-input {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 58px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.money-input:focus-within {
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, .14);
+}
+
+.money-prefix {
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+
+.money-field {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--ink);
+  letter-spacing: .3px;
+  font-variant-numeric: tabular-nums;
+  padding: 0 2px;
+}
+
+.money-field:focus { outline: none; }
+.money-field::placeholder { color: var(--ink-4); font-weight: 550; }
+
+@media (max-width: 360px) {
+  .pay-value { font-size: 30px; }
+  .stat-value { font-size: 20px; }
+}
+
+/* ---------------- 课表：周视图网格 ---------------- */
+
+.tt-switch {
+  display: flex;
+  padding: 3px;
+  background: #e9edf5;
+  border-radius: 12px;
+  align-self: flex-start;
+}
+
+.tt-switch button {
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink-3);
+  padding: 7px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.tt-switch button.is-on {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, .12);
+}
+
+.tt-grid-wrap {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px 8px 12px;
+  /* 列多的时候允许横向滑动，而不是把字挤没 */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 课表周视图的翻周条：‹ 9/14 – 9/20 · 本周 › */
+.tt-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -2px 0 8px;
+  min-height: 30px;
+}
+
+.tt-nav-btn {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--surface-2, #f2f4f8);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tt-nav-btn:active { background: #e6eaf2; }
+
+.tt-nav-text {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  white-space: nowrap;
+}
+
+.tt-nav-back {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand-soft, #e8eeff);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.tt-nav-back[hidden] { display: none; }
+
+.no-fv .tt-nav-btn:focus,
+.no-fv .tt-nav-back:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+.tt-grid {
+  display: grid;
+  grid-auto-rows: 56px;
+  row-gap: 3px;
+  column-gap: 3px;
+  min-width: 100%;
+}
+
+/* 一星期有周末课 -> 7 列，手机窄：压缩一点，保证一屏能看完整周 */
+.tt-grid.is-dense {
+  grid-auto-rows: 52px;
+  column-gap: 2px;
+  row-gap: 3px;
+}
+
+.tt-grid.is-dense .tt-block-name { font-size: 9.5px; line-height: 1.18; }
+.tt-grid.is-dense .tt-block-loc { font-size: 8.5px; }
+.tt-grid.is-dense .tt-block-more { font-size: 8.5px; }
+.tt-grid.is-dense .tt-grid-head-day { font-size: 12px; }
+.tt-grid.is-dense .tt-grid-head-date { font-size: 9px; margin-top: 2px; }
+.tt-grid.is-dense .tt-grid-period { font-size: 13px; }
+.tt-grid.is-dense .tt-grid-time-sub { font-size: 8.5px; }
+.tt-grid.is-dense .tt-grid-axis-head { font-size: 9px; }
+
+/* 第一行左上角：说明左边一列是节次还是时间 */
+.tt-grid-axis-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding-bottom: 2px;
+  font-size: 10px;
+  font-weight: 650;
+  color: var(--ink-4);
+}
+
+/* 第一行：星期表头 */
+.tt-grid-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+  height: 30px;
+}
+
+.tt-grid-head.is-today {
+  color: var(--brand);
+}
+
+.tt-grid-head-day {
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.tt-grid-head-date {
+  font-size: 10px;
+  font-weight: 550;
+  color: var(--ink-4);
+  margin-top: 3px;
+  line-height: 1;
+}
+
+.tt-grid-head.is-today .tt-grid-head-date { color: var(--brand); }
+
+/* 左侧时间轴 */
+.tt-grid-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.25;
+}
+
+.tt-grid-time-sub {
+  font-size: 9.5px;
+  font-weight: 550;
+  color: var(--ink-4);
+}
+
+/* 空格子：让网格读起来是一张表 */
+.tt-grid-cell {
+  border-radius: 10px;
+  background: #f6f8fc;
+}
+
+.tt-grid-cell.is-today { background: #eef2fe; }
+
+/* 课程块 */
+.tt-block {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 4px 4px 3px;
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease;
+}
+
+.tt-block:active { transform: scale(.96); }
+
+.tt-block-name {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.tt-block-loc {
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 600;
+  opacity: .75;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+/* 同一格子里有多门课时的提示 */
+.tt-block-more {
+  display: block;
+  margin-top: 1px;
+  font-size: 9px;
+  font-weight: 700;
+  opacity: .8;
+}
+
+/* 左侧轴显示「第几节」时：大数字 + 那节课的时间 */
+.tt-grid-time.is-period { padding-top: 1px; }
+
+.tt-grid-period {
+  display: block;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.1;
+  color: var(--ink-1, #1d2430);
+}
+
+.tt-grid-time.is-period .tt-grid-time-sub { margin-top: 1px; }
+
+/* 这一周没课时，网格里给一句说明 */
+.tt-grid-empty {
+  grid-column: 1 / -1;
+  padding: 26px 10px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.no-fv .tt-block:focus,
+.no-fv .tt-switch button:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+/* ---------------- 课表：列表视图 ---------------- */
+
+.tt-summary {
+  padding: 14px 18px;
+}
+
+.tt-summary-main {
+  display: block;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+/* 「这一周 9 节 · 约 6小时40分钟」 */
+.tt-summary-week {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.tt-summary-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.tt-day { margin-top: 16px; }
+.tt-day:first-child { margin-top: 0; }
+
+.tt-day-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 4px 8px;
+}
+
+.tt-day-name {
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
+.tt-day-today {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(79, 110, 247, .12);
+  color: var(--brand);
+  font-size: 11px;
+  font-weight: 650;
+  vertical-align: 1px;
+}
+
+/* 已经过去的日子：淡一点，方便一眼扫到「接下来」 */
+.tt-day-past {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-4);
+  font-size: 11px;
+  font-weight: 650;
+  vertical-align: 1px;
+}
+
+.tt-day-count {
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-3);
+}
+
+.tt-courses {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2px 14px;
+}
+
+.tt-course {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tt-course:last-child { border-bottom: none; }
+.tt-course:active { background: var(--surface-2); }
+
+.tt-time {
+  flex: none;
+  width: 46px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.25;
+}
+
+.tt-time-end {
+  display: block;
+  font-size: 11px;
+  font-weight: 550;
+  color: var(--ink-3);
+}
+
+/* 只有节次、还没设作息时间表的课：这里显示「第1节」 */
+.tt-time.is-period {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.tt-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 6px;
+}
+
+.tt-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.tt-meta {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-3);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.tt-meta-warn { color: #a9701a; }
+
+.tt-arrow {
+  flex: none;
+  margin-left: 8px;
+  color: #c6cddb;
+  display: grid;
+  place-items: center;
+}
+
+.tt-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 待导入列表里的小标记 */
+.tt-flag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 650;
+  background: #fdf1f1;
+  color: #c93a3a;
+}
+
+.tt-flag-warn { background: #fff7ea; color: #a06a12; }
+
+/* 星期选择器 */
+.wd-picker { display: flex; }
+
+.wd-picker button {
+  flex: 1;
+  height: 44px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0;
+  margin-left: -1px;
+}
+
+.wd-picker button:first-child {
+  margin-left: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.wd-picker button:last-child { border-radius: 0 12px 12px 0; }
+.wd-picker button.is-on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------- 课程表单：第几节（点一下自动填时间） ---------------- */
+
+.period-picker {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.period-picker button {
+  flex: 0 0 auto;
+  min-width: 46px;
+  height: 40px;
+  margin: 0 6px 6px 0;          /* 用 margin 而不是 gap：老 WebView 不支持 flex gap */
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+
+.period-picker button.is-on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.no-fv .period-picker button:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+.field-label-sub {
+  font-size: 11.5px;
+  font-weight: 550;
+  color: var(--ink-4);
+}
+
+.field-hint {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.field-hint.is-ok { color: #0d7a56; }
+.field-hint.is-warn { color: #a9701a; }
+
+/* 备注下面的常用词：点一下就填上（她的备注基本就那几种） */
+.note-quick {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0 0;
+}
+
+.note-quick button {
+  flex: 0 0 auto;
+  height: 30px;
+  margin: 0 6px 6px 0;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.note-quick button.is-on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.no-fv .note-quick button:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+/* 导入时的「合并 / 替换 / 取消」选择框：默认不动原有数据 */
+.merge-box {
+  flex: none;
+  margin: 0 18px 10px;
+  padding: 14px 14px 10px;
+  border: 1px solid #f0d9a8;
+  border-radius: 14px;
+  background: #fffaf0;
+}
+
+.merge-box[hidden] { display: none; }
+
+.merge-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.merge-sub {
+  margin: 6px 0 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.merge-box .btn-add-lg { margin-top: 8px; height: 46px; font-size: 14.5px; }
+
+.backup-reset {
+  display: block;
+  width: 100%;
+  margin: 14px 0 0;
+  text-align: center;
+  color: var(--ink-4);
+  font-size: 12px;
+}
+
+.merge-cancel {
+  display: block;
+  width: 100%;
+  margin: 10px 0 0;
+  text-align: center;
+}
+
+/* 记录列表标题右边的操作区（补昨天 / ＋添加） */
+.list-ops {
+  display: inline-flex;
+  align-items: center;
+}
+
+.list-ops > * + * { margin-left: 12px; }
+
+/* 数据说明 + 备份入口放同一行 */
+.tip-line-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 「忘了点下班」的那一段：看得见，但不刺眼 */
+.log-row.is-est {
+  background: #fffaf2;
+  border-radius: 12px;
+}
+
+.log-row.is-est .log-est {
+  color: #a9701a;
+  font-weight: 650;
+}
+
+/* 日历明细里「这天还没到」的课：按课表列出来，但灰一点、标明不计入工时 */
+.log-row.is-future .log-range,
+.log-row.is-future .log-note { color: var(--ink-3); }
+
+.log-row.is-future .log-dur { color: var(--ink-4); }
+
+.log-tag.is-future {
+  background: #f1f2f5;
+  color: var(--ink-3);
+}
+
+/* 课程表单里的输入框更紧凑，保证在 540 高的屏上也放得下 */
+.course-form > * + * { margin-top: 12px; }
+
+.field-row { display: flex; }
+.field-row > * { flex: 1; min-width: 0; }
+.field-row > * + * { margin-left: 12px; }
+
+.course-form .field-note { height: 46px; font-size: 14px; padding: 0 13px; }
+.course-form .field-input { height: 50px; font-size: 19px; }
+
+/* ---------------- 全屏页：导入课表 ---------------- */
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  /* 层叠顺序（从下到上）：页面内容 < 底部导航 < 全屏导入页(55) < 底部弹层(60/70) < 轻提示(80)
+     导入页里会打开弹层（「粘贴课表文字」、课程表单），弹层必须盖在导入页上面，
+     所以这里必须比 .sheet 的 60 小 —— 否则弹层被导入页挡住，看着就是「按钮点了没反应」 */
+  z-index: 55;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay[hidden] { display: none; }
+
+.ov-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 10px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.ov-back {
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand);
+  padding: 6px 4px;
+  cursor: pointer;
+  min-width: 66px;
+}
+
+.ov-back svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ov-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.ov-count {
+  min-width: 66px;
+  text-align: right;
+  padding-right: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.ov-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 18px 20px;
+}
+
+.ov-hint {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.ov-list { margin-bottom: 16px; }
+
+.ov-item {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 13px 14px;
+  margin-bottom: 10px;
+}
+
+.ov-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ov-item-name {
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.ov-item-name.is-missing { color: #c93a3a; }
+
+.ov-item-line {
+  margin-top: 5px;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-2);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.ov-item-warn {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c93a3a;
+  line-height: 1.55;
+}
+
+.ov-item-warn.is-soft { color: #a06a12; }
+
+.ov-item-ops { flex: none; margin-left: 10px; display: flex; }
+
+.ov-item-ops button {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 7px 11px;
+  cursor: pointer;
+}
+
+.ov-item-ops button + button { margin-left: 8px; }
+.ov-item-ops button.is-del { color: var(--danger); }
+
+.ov-foot {
+  flex: none;
+  display: flex;
+  padding: 12px 18px 16px;
+  padding: 12px 18px calc(16px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+.ov-foot > * + * { margin-left: 12px; }
+
+/* ---------------- 老 WebView 的焦点可见性兜底 ----------------
+   实体键盘用户 Tab 到按钮上必须看得见焦点。
+   认不出 :focus-visible 的浏览器里，由 JS 给 <html> 加 .no-fv 类。 */
+.no-fv .btn:focus,
+.no-fv .tab:focus,
+.no-fv .log-row:focus,
+.no-fv .tt-course:focus,
+.no-fv .cal-day:focus,
+.no-fv .cal-nav:focus,
+.no-fv .link-btn:focus,
+.no-fv .chip-btn:focus,
+.no-fv .sheet-x:focus,
+.no-fv .ov-back:focus,
+.no-fv .ov-item-ops button:focus,
+.no-fv .wd-picker button:focus,
+.no-fv .btn-add-lg:focus,
+.no-fv .btn-save:focus,
+.no-fv .btn-danger:focus,
+.no-fv .sheet-backdrop:focus {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
+}
+
+/* ---------------- 首页常驻鼓励语 ----------------
+   不做弹窗卡片：打开首页就能看到这句话；打卡后会换一句并轻微高亮；
+   点一下还能再换一句（隐藏触发）。
+   动画只用 opacity + transform，老 Android 设备也不掉帧 */
+
+.hero-msg {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 0 0 12px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-left: 3px solid rgba(79, 110, 247, .35);
+  border-radius: 0 0 0 2px;
+  background: none;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-align: left;
+  cursor: pointer;
+  word-break: break-word;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-msg:active { color: var(--ink); }
+
+/* 换新句子时的一次性高亮 */
+.hero-msg.is-new {
+  animation: msgIn .45s ease;
+}
+
+@keyframes msgIn {
+  0%   { opacity: .25; transform: translateY(5px); color: var(--brand); }
+  60%  { opacity: 1;   transform: none;            color: var(--brand); }
+  100% { opacity: 1;   transform: none;            color: var(--ink-2); }
+}
+
+.no-fv .hero-msg:focus { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---------------- 粘贴导入课表 ---------------- */
+
+.btn-add-alt {
+  margin-top: 10px;
+  border-style: solid;
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 14.5px;
+}
+
+.paste-how {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--ink-3);
+}
+
+.paste-how b { color: var(--ink-2); }
+
+.field-area {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  resize: vertical;
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.field-area:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, .14);
+}
+
+.field-area::placeholder { color: var(--ink-4); }
+
+/* ---------------- 课表时间并入工时 ---------------- */
+
+/* 今日记录里的「课程」标记 */
+.log-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #eef2ff;
+  color: #3b52d4;
+  vertical-align: 1px;
+}
+
+.log-row.is-class .log-dot { background: #8fa2f0; }
+.log-dot.is-class { background: #8fa2f0; }
+
+.log-covered {
+  font-size: 11px;
+  font-weight: 550;
+  color: var(--ink-4);
+}
+
+/* 课表页顶部的「第 N 周」 */
+.tt-week {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  gap: 8px;
+}
+
+.tt-week-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.tt-week-text.is-warn { color: #a06a12; }
+
+.tt-week-btn {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  padding: 6px 11px;
+  border-radius: 9px;
+  cursor: pointer;
+  flex: none;
+}
+
+/* ---------------- 作息时间表设置 ---------------- */
+
+.period-batch {
+  padding: 12px 14px 14px;
+  border-radius: 16px;
+  background: var(--surface-2);
+  flex: none;
+}
+
+.period-batch-title {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.period-batch .field-row > * + * { margin-left: 10px; }
+.period-batch .field-note { height: 46px; font-size: 15px; }
+.period-batch .btn-add-lg { margin-top: 12px; height: 46px; font-size: 14.5px; }
+
+.period-list { margin-top: 16px; }
+
+.period-row {
+  display: flex;
+  flex-wrap: wrap;              /* 窄屏时「共40分钟」自动换到下一行，两个时间框不会被挤扁 */
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.period-row:last-child { border-bottom: none; }
+
+.period-name {
+  flex: none;
+  width: 46px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+/* 开始 / 结束两个框都能改：白天 40 分钟、晚辅 120 分钟，逐节各填各的 */
+.period-input {
+  flex: 1 1 76px;
+  min-width: 0;
+  height: 42px;
+  padding: 0 6px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--ink);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.period-dash {
+  flex: none;
+  margin: 0 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.period-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, .14);
+}
+
+.period-end {
+  flex: 1 0 auto;
+  margin-left: 8px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.period-end.is-warn { color: #a9701a; }
+
+/* ---------------- 底部导航 ---------------- */
+
+.tabbar {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-top: 1px solid var(--line);
+  padding: 8px 6px;                                              /* 老 WebView 兜底 */
+  padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px)); /* 全面屏适配 */
+}
+
+.tab {
+  border: 0;
+  background: none;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0 4px;
+  color: var(--ink-3);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: color .16s ease;
+}
+
+.tab svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  margin-bottom: 4px;   /* 代替 flex gap */
+}
+
+.tab.is-active { color: var(--brand); }
+.tab:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+
+/* ---------------- 轻提示 ---------------- */
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 104px;                                                 /* 老 WebView 兜底 */
+  bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 12px);
+  max-width: 340px;                                              /* 老 WebView 兜底 */
+  max-width: min(340px, 84vw);
+  padding: 11px 17px;
+  border-radius: 14px;
+  background: rgba(19, 26, 38, .93);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 550;
+  line-height: 1.5;
+  text-align: center;
+  box-shadow: 0 12px 30px -8px rgba(12, 18, 32, .5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  z-index: 80;                 /* 比弹层更高，弹层里操作也能看到反馈 */
+}
+
+.toast.is-show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------------- 底部弹层 ---------------- */
+
+.sheet {
+  position: absolute;
+  top: 0;                      /* 老 WebView 不认识 inset 简写，必须写全 */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet[hidden] { display: none; }
+.sheet-top { z-index: 70; }
+
+.sheet-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  background: rgba(15, 20, 30, .42);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+
+.sheet-panel {
+  position: relative;
+  width: 100%;
+  max-height: 88%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 26px 26px 0 0;
+  padding: 6px 18px 18px;                                          /* 老 WebView 兜底 */
+  padding: 6px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -12px 40px rgba(12, 18, 32, .18);
+  transform: translateY(102%);
+  transition: transform .3s cubic-bezier(.32, .72, 0, 1);
+  /* 视口被压矮（软键盘弹出 / 小屏 / 横屏）时，面板自己能滚，
+     否则底部的「保存」按钮会跑到屏幕外点不到 */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheet.is-open .sheet-backdrop { opacity: 1; }
+.sheet.is-open .sheet-panel { transform: translateY(0); }
+
+.sheet-grab {
+  width: 38px;
+  height: 4px;
+  border-radius: 999px;
+  background: #e3e7ee;
+  margin: 4px auto 10px;
+  flex: none;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 0 14px;
+  flex: none;
+}
+
+.sheet-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: .2px;
+}
+
+.sheet-sub {
+  margin: 5px 0 0;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.sheet-x {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex: none;
+}
+
+.sheet-x:active { transform: scale(.92); }
+
+.sheet-x svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 -18px;
+  padding: 0 18px;
+}
+
+.btn-add-lg {
+  margin-top: 16px;
+  height: 54px;
+  width: 100%;
+  flex: none;
+  border-radius: 16px;
+  border: 1px dashed #c8d1e6;
+  background: var(--surface-2);
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .12s ease, background-color .16s ease;
+}
+
+.btn-add-lg:active { transform: scale(.985); background: #eef2fb; }
+
+/* ---------------- 时间输入 ---------------- */
+
+.time-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: none;
+}
+
+.field { display: flex; flex-direction: column; }
+.field > * + * { margin-top: 7px; }   /* 代替 flex gap */
+
+.field-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  padding-left: 2px;
+}
+
+.field-input {
+  height: 58px;
+  width: 100%;
+  padding: 0 6px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--ink);
+  text-align: center;
+  letter-spacing: .5px;
+  font-variant-numeric: tabular-nums;
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, .14);
+}
+
+/* 结束时间留空 = 进行中 */
+.field-input.is-empty {
+  border-style: dashed;
+  border-color: #cbd5e8;
+  color: var(--ink-3);
+}
+
+.field-hint {
+  margin: 10px 2px 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  flex: none;
+}
+
+/* 备注输入 */
+.note-field { margin-top: 16px; flex: none; }
+
+.field-note {
+  height: 52px;
+  width: 100%;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 550;
+  color: var(--ink);
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.field-note:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, .14);
+}
+
+.field-note::placeholder { color: var(--ink-4); font-weight: 500; }
+
+.form-msg {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 550;
+  line-height: 1.6;
+  flex: none;
+}
+
+.form-msg[hidden] { display: none; }
+.form-msg.is-error { background: #fdf1f1; color: #c93a3a; }
+.form-msg.is-warn  { background: #fff7ea; color: #a06a12; }
+
+.sheet-actions {
+  display: flex;
+  padding-top: 16px;
+  flex: none;
+  /* 面板滚动时把按钮钉在底部，保证「保存」永远点得到 */
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+
+.sheet-actions > * + * { margin-left: 12px; }   /* 代替 flex gap */
+
+.btn-danger,
+.btn-save {
+  height: 54px;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .12s ease;
+}
+
+.btn-danger {
+  flex: 1;
+  border: 1px solid #f2d6d6;
+  background: #fdf4f4;
+  color: var(--danger);
+}
+
+.btn-save {
+  flex: 1.7;
+  border: 0;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+  box-shadow: 0 10px 22px -8px rgba(79, 110, 247, .55);
+}
+
+.sheet-actions.no-delete { display: block; }
+.sheet-actions.no-delete .btn-save { width: 100%; }
+
+.btn-danger[hidden] { display: none; }
+.btn-danger:active,
+.btn-save:active { transform: scale(.985); }
+
+/* ============================================================
+   工资池 / 工资进度
+   ------------------------------------------------------------
+   这里只表示「进度」，不是实发工资：
+   工资进度 = 月工资 × 已工作工时 ÷ 本月目标工时（最高 = 月工资）
+   ============================================================ */
+
+/* ---- 首页：工资池卡片 ---- */
+
+.pool-card { padding: 15px 18px 16px; }
+
+.pool-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pool-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: .3px;
+}
+
+.pool-month { color: var(--ink-4); }
+
+/* 「设置」是这一屏最小的按钮（35x31），手指不好点。
+   不外扩布局、只把可点区域撑到 55x43（伪元素不可见），看上去一模一样。
+   下边只外扩 5px：再多就会压到下面那行金额（虽然金额本身不可点，但别抢） */
+.pool-head .link-btn { position: relative; }
+.pool-head .link-btn::after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  right: -10px;
+  bottom: -5px;
+  left: -10px;
+}
+
+.pool-amount {
+  margin: 6px 0 0;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -.6px;
+  line-height: 1.15;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.pool-of {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+.pool-card.is-empty .pool-amount { color: var(--ink-4); }
+
+.pool-bar,
+.pay-bar {
+  height: 8px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: #eef0f6;
+  overflow: hidden;
+}
+
+.pool-bar-fill,
+.pay-bar-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  transition: width .3s ease;
+}
+
+.pool-card.is-empty .pool-bar-fill { background: var(--ink-4); }
+
+.pool-line {
+  display: flex;
+  align-items: baseline;
+  margin-top: 7px;
+}
+
+.pool-percent {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.pool-card.is-empty .pool-percent { color: var(--ink-4); }
+
+.pool-sub {
+  margin-left: 8px;
+  font-size: 11.5px;
+  font-weight: 550;
+  color: var(--ink-3);
+}
+
+.pool-note {
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+/* ---- 我的：工资进度（第一优先） ---- */
+
+.pay-card.is-progress {
+  background: linear-gradient(150deg, #f5f7ff, #eef2fe 60%, #f6f2ff);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 10px 24px rgba(79, 110, 247, .12);
+}
+
+.pay-value .pay-now { font-size: 34px; }
+.pay-value .pay-of  { font-size: 14.5px; font-weight: 600; color: var(--ink-3); letter-spacing: 0; }
+
+/* 金额变长（¥12345.67 / ¥12345.67）时自动缩一点，窄屏也不会被裁掉 */
+.pay-value.is-long .pay-now { font-size: 25px; }
+.pay-value.is-long .pay-of  { font-size: 12.5px; }
+
+.pay-card.is-progress .pay-bar-fill { background: linear-gradient(90deg, var(--brand), var(--brand-2)); }
+
+.pay-percent {
+  margin: 7px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.pay-percent:empty { display: none; }
+
+.pay-more {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-2);
+}
+
+.pay-more:empty { display: none; }
+
+/* 「仅统计」标签：实际平均时薪已经退到最后一排，不再当主指标 */
+.stat-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-3);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  vertical-align: 1px;
+}
+
+/* ---- 设置弹层：目标工时 / 沿用 ---- */
+
+.money-suffix {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-3);
+  padding-left: 4px;
+  flex: none;
+}
+
+.salary-fill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.field-sub {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  padding-right: 8px;
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.check-row input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 9px 0 0;
+  flex: none;
+  accent-color: var(--brand);
+}
+
+/* 预览是多行：让它按换行显示，不挤成一坨 */
+#salaryPreview { white-space: pre-line; }
+
+@media (max-width: 360px) {
+  /* 小屏把边距收紧，把宽度让给日历格子 */
+  .screen { padding-left: 14px; padding-right: 14px; }
+  .cal-card { padding-left: 10px; padding-right: 10px; }
+  .cal-week,
+  .cal-grid { gap: 2px; }
+  /* 工资池：窄屏把百分比和说明换行排，避免挤成一条 */
+  .pool-amount { font-size: 24px; }
+  .pay-value .pay-now { font-size: 29px; }
+  .pay-value.is-long .pay-now { font-size: 22px; }
+  .pool-line { display: block; }
+  .pool-sub { display: block; margin: 2px 0 0; }
+}
+
+/* 矮屏（老的 320x480 手机）：把上方留白收一收。
+   鼓励语长短不一，长句会换到第二行（+23px 左右），不收紧的话
+   两个打卡按钮会被压到底部导航下面几个像素（实测差 2px）。 */
+@media (max-height: 520px) {
+  .screen { padding-top: 14px; padding-bottom: 20px; }
+  .screen > * + * { margin-top: 10px; }
+  .hero { padding: 14px 18px 13px; }
+  .hero-msg { margin-top: 10px; padding-top: 8px; }
+  .actions .btn { height: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

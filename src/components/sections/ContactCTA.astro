@@ -1,0 +1,40 @@
+---
+import { contact } from '../../data/home';
+import { site } from '../../data/site';
+import Section from '../primitives/Section.astro';
+
+/**
+ * 联系区。
+ * 招聘者最终要做的事只有一件：拿到联系方式。
+ * 所以这里把邮箱做成整块可点的主元素，其余信息降一级。
+ */
+const items = [
+  { label: '邮箱', value: site.contact.email, href: `mailto:${site.contact.email}` },
+  { label: '电话', value: site.contact.phone, href: `tel:${site.contact.phone}` },
+  { label: 'GitHub', value: 'github.com/LR0625', href: site.contact.github, external: true },
+  { label: '简历', value: '下载 PDF', href: site.resume, download: true },
+].filter((item) => item.value);
+---
+
+<Section id="contact" eyebrow="Contact" lead={contact.lead} divider>
+  <div class="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+    {
+      items.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener' : undefined}
+          download={item.download ? true : undefined}
+          class="group flex items-baseline justify-between gap-4 bg-surface px-5 py-5 transition-colors duration-150 hover:bg-bg-subtle"
+        >
+          <span class="t-micro tracking-wide text-ink-3">{item.label}</span>
+          <span class="t-small font-medium text-ink transition-colors duration-150 group-hover:text-accent-ink tnum">
+            {item.value}
+            {item.external && <span aria-hidden="true"> ↗</span>}
+            {item.download && <span aria-hidden="true"> ↓</span>}
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</Section>

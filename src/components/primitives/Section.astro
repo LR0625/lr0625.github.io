@@ -1,0 +1,46 @@
+---
+/**
+ * 区块容器。
+ *
+ * 标题规则：
+ *   · 只给 eyebrow（英文小节标签）→ eyebrow 本身作为 h2，保留文档大纲语义
+ *   · 同时给 title → eyebrow 作小标签，title 作 h2
+ * 这样可以避免「eyebrow 和 title 写同一句话」造成的重复标题。
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  /** 与上一屏之间是否画分割线 */
+  divider?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const { eyebrow, title, lead, divider = false, id, class: className = '' } = Astro.props;
+const hasHead = Boolean(eyebrow || title);
+---
+
+<section
+  id={id}
+  class:list={['py-16 sm:py-20', divider && 'border-t border-line', className]}
+>
+  {
+    hasHead && (
+      <header class="mb-10 sm:mb-12" data-reveal>
+        {title ? (
+          <>
+            {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+            <h2 class="t-h2 text-ink">{title}</h2>
+          </>
+        ) : (
+          <h2 class="eyebrow">{eyebrow}</h2>
+        )}
+        {lead && (
+          <p class="t-small mt-3.5 max-w-[60ch] text-ink-2">{lead}</p>
+        )}
+      </header>
+    )
+  }
+  <slot />
+</section>

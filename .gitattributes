@@ -1,0 +1,11 @@
+# 统一换行符，避免 Windows 提交产生无意义的整文件 diff
+* text=auto eol=lf
+
+# 二进制素材不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.pdf binary
+*.woff2 binary

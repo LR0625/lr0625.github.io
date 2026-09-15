@@ -1,0 +1,313 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/primitives/Tag.astro';
+import { maturityLabel, maturityNote } from '../../lib/maturity';
+import { projectHref } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const isConcept = data.maturity === 'concept';
+const demo = isConcept ? undefined : data.links.demo;
+const repo = isConcept ? undefined : data.links.repo;
+const download = isConcept ? undefined : data.links.download;
+const users = isConcept ? null : data.users;
+const metrics = isConcept ? [] : data.metrics;
+const stack = isConcept ? [] : data.stack;
+const iterations = isConcept ? [] : data.iterations;
+
+const gallery = isConcept ? data.diagrams : data.gallery;
+const cover = gallery.find((g) => g.isCover) ?? gallery[0];
+
+// 手机竖屏截图（长宽比 > 1.7）走小图网格；横向截图整幅展示
+const isTall = (img: { height: number; width: number }) => img.height / img.width > 1.7;
+const tallShots = gallery.filter((g) => isTall(g.src));
+const wideShots = gallery.filter((g) => !isTall(g.src));
+
+const userLine = users
+  ? [users.who, users.count ? `${users.count} 人` : null, users.since ? `自 ${users.since}` : null]
+      .filter(Boolean)
+      .join(' · ')
+  : null;
+
+const all = await getCollection('projects');
+const ordered = all.sort((a, b) => a.data.order - b.data.order);
+const idx = ordered.findIndex((p) => p.id === project.id);
+const next = ordered[idx + 1] ?? ordered[0];
+
+const meta = [
+  { k: '完成度', v: maturityLabel[data.maturity] },
+  userLine ? { k: '真实用户', v: userLine } : null,
+  data.maturity !== 'concept' && data.kind === 'engineering'
+    ? { k: '类型', v: '硬件 / 工程' }
+    : null,
+].filter((x): x is { k: string; v: string } => x !== null);
+---
+
+<BaseLayout
+  path={projectHref(project.id)}
+  title={data.title}
+  description={data.subtitle}
+  type="article"
+  image={cover?.src.src}
+>
+  <article class="pt-12 pb-4 sm:pt-16">
+    <a
+      href="/projects"
+      class="t-micro inline-flex items-center gap-1.5 text-ink-3 transition-colors duration-150 hover:text-accent-ink"
+    >
+      <span aria-hidden="true">←</span> 全部项目
+    </a>
+
+    <header class="mt-8" data-reveal>
+      <div class="mb-5 flex flex-wrap items-center gap-2">
+        <Tag tone={data.maturity === 'iterating' ? 'accent' : 'neutral'}>
+          {maturityLabel[data.maturity]}
+        </Tag>
+        {data.tags.slice(0, 3).map((tag) => <Tag>{tag}</Tag>)}
+      </div>
+
+      <h1 class="t-h1 max-w-[22ch] text-ink">{data.title}</h1>
+      <p class="t-lead mt-5 max-w-[46ch] text-ink-2">{data.subtitle}</p>
+    </header>
+
+    <!-- 元信息带：完成度 / 真实用户 / 类型 —— 招聘者最先要确认的三件事 -->
+    <dl
+      class="mt-9 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3"
+      data-reveal
+    >
+      {
+        meta.map((m) => (
+          <div class="bg-surface px-5 py-4">
+            <dt class="t-micro text-ink-3">{m.k}</dt>
+            <dd class="t-small mt-1 font-medium text-ink">{m.v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="t-micro mt-3 text-ink-3">{maturityNote[data.maturity]}</p>
+    {users?.note && <p class="t-micro mt-1 text-ink-3">{users.note}</p>}
+
+    <!-- 主行动：Demo 在最前 -->
+    {
+      (demo || repo || download) && (
+        <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal>
+          {demo && (
+            <a
+              href={demo}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center rounded-md bg-accent-solid px-5 py-2.5 text-sm font-medium text-accent-on transition-opacity duration-150 hover:opacity-90"
+            >
+              打开产品 <span aria-hidden="true" class="ml-1">↗</span>
+            </a>
+          )}
+          {repo && (
+            <a
+              href={repo}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-line-strong"
+            >
+              代码仓库 <span aria-hidden="true" class="ml-1">↗</span>
+            </a>
+          )}
+          {download && !demo && (
+            <a
+              href={download}
+              class="inline-flex items-center rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-line-strong"
+            >
+              下载 <span aria-hidden="true" class="ml-1">↓</span>
+            </a>
+          )}
+        </div>
+      )
+    }
+
+    <!-- 数字：每一项都带来源，可被追问 -->
+    {
+      metrics.length > 0 && (
+        <section class="mt-14" aria-labelledby="metrics" data-reveal>
+          <h2 id="metrics" class="eyebrow mb-5">
+            数字
+          </h2>
+          <dl class="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
+            {metrics.map((m) => (
+              <div class="bg-surface px-5 py-5">
+                <dd class="t-stat text-ink">{m.value}</dd>
+                <dt class="t-micro mt-1.5 text-ink-3">{m.label}</dt>
+                {m.source && (
+                  <p class="t-micro mt-2.5 leading-relaxed text-ink-3 opacity-80">
+                    来源：{m.source}
+                  </p>
+                )}
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    <!-- 真实截图：先让招聘者看到产品，再读故事 -->
+
+    {
+      (tallShots.length > 0 || wideShots.length > 0) && (
+        <section class="mt-16" aria-labelledby="shots" data-reveal>
+          <h2 id="shots" class="eyebrow mb-6">
+            {isConcept ? '结构图' : '产品截图'}
+          </h2>
+
+          {tallShots.length > 0 && (
+            <div class="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-5">
+              {tallShots.map((shot) => (
+                <figure>
+                  <div class="overflow-hidden rounded-lg border border-line bg-bg-subtle">
+                    <Image
+                      src={shot.src}
+                      alt={shot.alt}
+                      widths={[220, 440]}
+                      sizes="(min-width: 1024px) 200px, (min-width: 640px) 30vw, 45vw"
+                      loading="lazy"
+                      class="w-full"
+                    />
+                  </div>
+                  {shot.caption && (
+                    <figcaption class="t-micro mt-2.5 text-ink-3">{shot.caption}</figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          )}
+
+          {wideShots.length > 0 && (
+            <div class:list={['grid gap-7', tallShots.length > 0 && 'mt-10']}>
+              {wideShots.map((shot) => (
+                <figure>
+                  <div class="overflow-hidden rounded-lg border border-line bg-bg-subtle">
+                    <Image
+                      src={shot.src}
+                      alt={shot.alt}
+                      widths={[600, 1000, 1400]}
+                      sizes="(min-width: 1160px) 1100px, 100vw"
+                      loading="lazy"
+                      class="w-full"
+                    />
+                  </div>
+                  {shot.caption && (
+                    <figcaption class="t-micro mt-3 text-ink-3">{shot.caption}</figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          )}
+        </section>
+      )
+    }
+
+    <!-- 概念项目：明确不做什么。取舍比功能清单更能体现判断力。 -->
+    {
+      isConcept && data.nonGoals.length > 0 && (
+        <section class="mt-14" aria-labelledby="nongoals" data-reveal>
+          <h2 id="nongoals" class="eyebrow mb-5">
+            明确不做
+          </h2>
+          <ul class="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
+            {data.nonGoals.map((goal) => (
+              <li class="t-small bg-surface px-5 py-5 text-ink-2">{goal}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- 正文 -->
+    <div class="prose mt-16" data-reveal>
+      <Content />
+    </div>
+
+    <!-- 迭代记录：真实迭代的日志。放在正文之后 ——
+         招聘者应该先看到产品与判断，再决定要不要读每一条改动的来源。 -->
+    {
+      iterations.length > 0 && (
+        <section class="mt-16 border-t border-line pt-10" aria-labelledby="iterations" data-reveal>
+          <h2 id="iterations" class="eyebrow mb-2">
+            迭代记录
+          </h2>
+          <p class="t-micro mb-6 max-w-[62ch] text-ink-3">
+            每一轮改动都写明「什么触发的」—— 没有触发原因的改动不算迭代。
+          </p>
+          <ol class="border-t border-line">
+            {iterations.map((it) => (
+              <li class="grid gap-2 border-b border-line py-5 sm:grid-cols-[1fr_1.1fr] sm:gap-8">
+                <p class="t-small text-ink">{it.change}</p>
+                <p class="t-micro flex gap-2 text-ink-3">
+                  <span class="shrink-0 text-accent-ink" aria-hidden="true">
+                    ↑ 触发
+                  </span>
+                  <span>{it.trigger}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    <!-- 技术栈：内容优先级最低，放在正文之后 -->
+    {
+      stack.length > 0 && (
+        <section class="mt-14 border-t border-line pt-8" aria-labelledby="stack">
+          <h2 id="stack" class="eyebrow mb-4">
+            技术实现
+          </h2>
+          <ul class="flex flex-wrap gap-2">
+            {stack.map((item) => (
+              <li class="t-micro rounded-md border border-line px-2.5 py-1 text-ink-2">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      data.needsReview && (
+        <p class="t-micro mt-10 max-w-[64ch] rounded-md border border-line bg-bg-subtle px-4 py-3 text-ink-3">
+          <strong class="font-medium text-ink-2">待确认：</strong>
+          本页仍有未经本人核对的内容（见正文末尾说明），上线前需要补齐或删除。
+        </p>
+      )
+    }
+  </article>
+
+  {
+    next && next.id !== project.id && (
+      <nav class="mt-16 border-t border-line py-8" aria-label="项目导航">
+        <a
+          href={projectHref(next.id)}
+          class="group flex items-baseline justify-between gap-6 transition-colors duration-150"
+        >
+          <span class="eyebrow">下一个</span>
+          <span class="text-right">
+            <span class="t-h3 block text-ink transition-colors duration-150 group-hover:text-accent-ink">
+              {next.data.title}
+            </span>
+            <span class="t-micro mt-1 block text-ink-3">{next.data.subtitle}</span>
+          </span>
+        </a>
+      </nav>
+    )
+  }
+</BaseLayout>

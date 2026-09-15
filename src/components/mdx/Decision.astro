@@ -1,0 +1,106 @@
+---
+/**
+ * 决策卡片。
+ * 一个产品案例里最该被记住的东西是「做了什么决定、为什么、放弃了什么」。
+ * 这三件事用卡片固定成结构，比埋在段落里更容易被扫到。
+ */
+interface Props {
+  /** 决策标题，动词短语 */
+  title: string;
+  /** 为什么这么决定 —— 事实或推理，不是形容词 */
+  why?: string;
+  /** 放弃了什么。取舍比功能列表更能体现判断力 */
+  rejected?: string;
+  /** 代价 / 风险。敢写代价的决策才可信 */
+  cost?: string;
+  label?: string;
+}
+
+const { title, why, rejected, cost, label = '决策' } = Astro.props;
+
+const rows = [
+  why && { k: '为什么', v: why },
+  rejected && { k: '放弃了', v: rejected },
+  cost && { k: '代价', v: cost },
+].filter((r): r is { k: string; v: string } => Boolean(r));
+---
+
+<aside class="decision">
+  <p class="decision__label">{label}</p>
+  <p class="decision__title">{title}</p>
+
+  {
+    rows.length > 0 && (
+      <dl class="decision__rows">
+        {rows.map((r) => (
+          <div class="decision__row">
+            <dt>{r.k}</dt>
+            <dd>{r.v}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+</aside>
+
+<style is:global>
+  .decision {
+    margin-block: 2.2em;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    background: var(--bg-subtle);
+  }
+
+  .decision__label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0;
+  }
+
+  .decision__title {
+    margin: 0.6rem 0 0;
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.5;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .decision__rows {
+    margin: 1.1rem 0 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .decision__row {
+    display: grid;
+    grid-template-columns: 3.6rem 1fr;
+    gap: 0.9rem;
+    align-items: baseline;
+  }
+
+  .decision__row dt {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+  }
+
+  .decision__row dd {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .decision__row {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

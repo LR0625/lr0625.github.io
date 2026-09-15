@@ -1,0 +1,42 @@
+---
+import { getFeaturedProjects } from '../../lib/content';
+import { moreWorkLink } from '../../data/home';
+import ProjectCard from '../cards/ProjectCard.astro';
+import Section from '../primitives/Section.astro';
+
+/**
+ * 首页精选。
+ *
+ * 只渲染 featured 项目，数量由数据决定而不是硬编码 ——
+ * 如果只有一个项目值得上首页，这里就只出现一个，
+ * 不会为了版面好看去凑第二个。
+ */
+const projects = await getFeaturedProjects();
+---
+
+{
+  projects.length > 0 && (
+    <Section
+      id="work"
+      eyebrow="Selected Work"
+      lead="按「有没有真实用户、有没有被真实反馈改过」筛选，不是按技术复杂度。"
+      divider
+    >
+      <div class="grid gap-5">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+
+      <div class="mt-8">
+        <a
+          href={moreWorkLink.href}
+          class="inline-flex items-center gap-1.5 text-sm text-ink-2 transition-colors duration-150 hover:text-accent-ink"
+        >
+          {moreWorkLink.label}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </Section>
+  )
+}

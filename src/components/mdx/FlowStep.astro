@@ -1,0 +1,19 @@
+---
+interface Props {
+  /** 序号，如 "01" */
+  n?: string;
+  title: string;
+  /** 补充说明，一句话 */
+  note?: string;
+  /** alert = 问题/负向；key = 关键决策；默认中性 */
+  tone?: 'default' | 'alert' | 'key';
+}
+
+const { n, title, note, tone = 'default' } = Astro.props;
+---
+
+<li class:list={['flow-step', tone !== 'default' && `flow-step--${tone}`]}>
+  {n && <span class="flow-step__node" aria-hidden="true">{n}</span>}
+  <p class="flow-step__title">{title}</p>
+  {note && <p class="flow-step__note">{note}</p>}
+</li>

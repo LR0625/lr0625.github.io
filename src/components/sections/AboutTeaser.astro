@@ -1,0 +1,30 @@
+---
+import { aboutTeaser } from '../../data/home';
+import { positioning } from '../../data/about';
+import Section from '../primitives/Section.astro';
+
+/**
+ * About 摘要：只给定位，不给履历。
+ * 履历在 /about，首页不重复。
+ */
+---
+
+<Section id="about" eyebrow="About" divider>
+  <div class="max-w-[60ch] space-y-3" data-reveal>
+    {
+      positioning.slice(0, 2).map((line) => (
+        <p class="t-small text-ink-2">{line}</p>
+      ))
+    }
+  </div>
+
+  <div class="mt-8">
+    <a
+      href={aboutTeaser.cta.href}
+      class="inline-flex items-center gap-1.5 text-sm text-ink-2 transition-colors duration-150 hover:text-accent-ink"
+    >
+      {aboutTeaser.cta.label}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</Section>
