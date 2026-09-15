@@ -1,7 +1,9 @@
-# 林润 · AI Product Lab
+# 林润 · LR SPACE
 
 个人作品集网站。定位是 **AI Product Builder Portfolio** —— 用可点击的产品和结构化的产品思考过程证明「做过」，而不是「会做」。
 
+- 线上地址：<https://lrspace.netlify.app>（主站）
+- 镜像：<https://lr0625.github.io>
 - 身份：Robot Engineering × AI × Vibe Coding
 - 目标读者：AI 产品岗招聘者
 

@@ -8,6 +8,13 @@ export const site = {
   name: '林润',
   nameEn: 'LIN RUN',
 
+  /**
+   * 站点名。出现在 <title> 后缀、页脚、分享卡片上。
+   * 与简历上的作品集链接（lrspace.netlify.app）保持一致 ——
+   * 招聘者从简历点进来时，URL 和页面上的名字对得上。
+   */
+  brand: 'LR SPACE',
+
   /** 身份标签。首屏必须在这一行里完成定位。 */
   role: 'AI Product Builder',
 

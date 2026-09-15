@@ -39,7 +39,9 @@ export function buildSeo(input: SeoInput, siteUrl: URL | undefined): Seo {
   const base = requireSiteUrl(siteUrl);
   const { title, description, path, type = 'website', image, noindex = false } = input;
 
-  const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
+  const fullTitle = title
+    ? `${title} · ${site.brand}`
+    : `${site.name} · ${site.brand} — ${site.role}`;
 
   return {
     fullTitle,

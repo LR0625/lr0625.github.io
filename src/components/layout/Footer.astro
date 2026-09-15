@@ -6,7 +6,9 @@ import { site } from '../../data/site';
   <div class="container-page py-12">
     <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <p class="t-small font-semibold tracking-tight text-ink">{site.name}</p>
+        <p class="t-small font-semibold tracking-tight text-ink">
+          {site.name} <span class="text-ink-3">·</span> {site.brand}
+        </p>
         <p class="mt-1 text-sm text-ink-2">{site.role}</p>
         <p class="mt-0.5 text-sm text-ink-3">{site.axes}</p>
       </div>
