@@ -81,7 +81,7 @@ export const timeline = [
   },
   {
     when: '2026.08',
-    title: '健身日历 v1.1.0',
+    title: '个人健身数据管理 App v1.1.0',
     detail: '4 天循环增肌计划 + 日历记录，个人自用工具',
     source: 'APK 元数据',
   },
@@ -93,7 +93,7 @@ export const timeline = [
   },
   {
     when: '2026.09',
-    title: '班级生日祝福自动化上线',
+    title: 'AI 自动化生日祝福工具上线',
     detail: 'GitHub Actions 无人值守运行，32 名同学生日当天各收到一封独立邮件',
     source: 'git log + 项目配置',
   },

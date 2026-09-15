@@ -79,7 +79,7 @@ export const moreWorkLink = { label: 'All projects', href: '/projects' } as cons
 /** 首页思考区只放 3 条，结论前置。 */
 export const thinkingTeaser = {
   title: 'Product Thinking',
-  slugs: ['why-salary-funnel', 'why-not-ai-birthday', 'clickable-vs-correct'],
+  slugs: ['why-salary-funnel', 'clickable-vs-correct', 'one-root-cause'],
 } as const;
 
 /** About 摘要：只给两行，详情在 /about。 */
